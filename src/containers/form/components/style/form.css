@@ -1,0 +1,74 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+.form-wrap{
+    display: flex;
+    min-width: 100%;
+    min-height: 100vh;
+    background: rgb(243, 240, 240);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    font-size: 30px;
+    color: rgb(138, 128, 128);
+}
+
+.form{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    min-width: 340px;
+    
+}
+
+.login, .password{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 22px;
+}
+
+input{
+    background: none;
+    border: 1px solid black;
+}
+
+.radio{
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    margin-top: 20px;
+}
+
+.gender{
+    display: flex;
+    align-items: baseline;
+}
+
+.email{
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    margin-top: 20px;
+}
+
+.select{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 20px;
+    font-size: 22px;
+}
+
+.select-menu{
+    min-height: 30px;
+    font-size: 16px
+}
+
+.button-submit{
+    margin-top: 20px;
+}
