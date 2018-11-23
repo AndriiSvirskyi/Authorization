@@ -18,7 +18,7 @@
 }
 
 .form{
-    margin-top: 40px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     min-width: 340px;
@@ -55,6 +55,9 @@ input{
     font-size: 22px;
     margin-top: 20px;
 }
+.email input{
+    width: 60%;
+}
 
 .select{
     display: flex;
@@ -71,4 +74,16 @@ input{
 
 .button-submit{
     margin-top: 20px;
+}
+
+.link{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(66, 65, 65)
 }

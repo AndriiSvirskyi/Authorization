@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
-import {render} from 'react-dom';
-import { Registration, Authorization }  from './containers'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './app';
 
-class Login extends Component {
-    constructor(props){
-        super(props)
-        this.login = true;
-    }
-    render() {
-        return (
-            this.login === true ? <Authorization/> : <Registration/> 
-        );
-    }
-}
-
-export default Login;
-
-render(<Login/>, document.getElementById('root'))
+ReactDOM.render((
+    <Provider store={store}>
+        <BrowserRouter basename="/">
+            <App />
+        </BrowserRouter>
+    </Provider>
+), document.getElementById('root'));

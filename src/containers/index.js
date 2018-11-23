@@ -1,6 +1,9 @@
-import { Registration, Authorization } from './form'
+import { Registration, Authorization, PasswordRecovery } from './login'
+import Background from './background'
 
 export {
     Registration, 
-    Authorization
+    Authorization,
+    Background,
+    PasswordRecovery,
 }
