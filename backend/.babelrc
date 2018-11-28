@@ -1,0 +1,14 @@
+{
+    "presets": ["react", "@babel/preset-es2017"],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-class-properties",
+      [
+        "transform-runtime",
+        {
+          "polyfill": true,
+          "regenerator": true
+        }
+      ]
+    ]
+  }
