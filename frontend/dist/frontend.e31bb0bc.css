@@ -27,7 +27,7 @@ a{
 }
 .button{
     border: 2px solid rgba(0,0,0,0.3);
-    width: 70px;
+    width: 140px;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
@@ -63,4 +63,10 @@ nav a {
 
 nav a:last-child {
     margin-right: 0;
+}
+
+.alert{
+    font-size: 24px;
+    text-align: center;
+    color: rgb(204, 27, 27);
 }

@@ -25,7 +25,7 @@ class Signin extends PureComponent {
                         <form className="form" onSubmit={handleSubmit}>
 
                         <h1>Authorization</h1>
-                        <h4 style={{color: "red"}}>{this.props.message}</h4>
+                        <h4 className="alert">{this.props.message}</h4>
                             <div>
                                 <label>
                                     <div className="email">Email</div>

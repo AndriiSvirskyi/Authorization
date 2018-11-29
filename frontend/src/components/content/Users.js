@@ -7,7 +7,7 @@ class Users extends Component {
         super(props)
         this.getUsers = ()=>this.props.getUsers(this.props.token)
     }
-    componentWillMount() {
+    componentDidMount() {
         this.getUsers()
     }
     renderUser = (users) =>{
@@ -21,7 +21,7 @@ class Users extends Component {
         return (
             <div className="users-list">
                 <ul>
-                    {this.props.users ? this.renderUser(this.props.users) : <div>you are not authorization</div>}
+                    {this.props.users ? this.renderUser(this.props.users) : <div className="alert">you are not authorization</div>}
                 </ul>
             </div>
         );

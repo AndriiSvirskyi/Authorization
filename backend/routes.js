@@ -10,5 +10,7 @@ routes.get('/public', (req, res) => res.send({ public: true }));
 routes.post('/signup', Authentication.signup);
 routes.post('/signin', requireSignin, Authentication.signin);
 routes.get('/users', Authentication.getUsers);
+routes.post('/changepassword', Authentication.changePassword);
+routes.get('/permission', Authentication.permission);
 
 module.exports = routes;

@@ -5,17 +5,17 @@ import * as authActions from '../../actions/auth';
 
 
 class Header extends PureComponent {
+    
     render() {
         return (
         <nav>
-            <div>
-                <div className="link-block">
-                    <div className="button"><Link to="/">Home</Link></div>
-                    <div className="button"><Link to="/content">Content</Link></div>
-                    <div className="button"><Link to="/signin">Sign in</Link></div>
-                    <div className="button"><Link to="/signup">Sign up</Link></div>
-                    <div className="button"><Link to="/users">Users</Link></div>
-                </div>    
+            <div className="link-block">
+                <div className="button"><Link to="/">Home</Link></div>
+                <div className="button"><Link to="/content">Content</Link></div>
+                <div className="button"><Link to="/signin">Sign in</Link></div>
+                <div className="button"><Link to="/signup">Sign up</Link></div>
+                <div className="button"><Link to="/changepassword">Change password</Link></div>
+                <div className="button"><Link to="/users">Users</Link></div>     
             </div> 
         </nav>
         );

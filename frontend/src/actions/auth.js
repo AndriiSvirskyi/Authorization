@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH, ERROR, USERS } from './types';
+import { AUTH, ERROR, USERS, CHANGE, PERMISSION } from './types';
 
 const url = 'http://localhost:3001/api';
 
@@ -61,8 +61,41 @@ export const getUsers = (token) => async dispatch => {
         await dispatch({
             type: USERS,
             users : users,
-            token : token
         })   
+    } catch (err) {
+        dispatch({
+            type: ERROR,
+            message: 'you dont can to get users'
+        });
+    }
+};
+
+export const getPermission = (token) => async dispatch => {
+    try {
+        const AuthStr = 'Bearer '.concat(token); 
+        const res = await axios.get(`${url}/permission`, { headers: { Authorization: AuthStr } });
+        await dispatch({
+            type: PERMISSION,
+            permission : res.data,
+        })   
+    } catch (err) {
+        dispatch({
+            type: ERROR,
+            message: 'You are not registered'
+        });
+    }
+};
+
+
+export const changePassword = (data) => async dispatch => {
+    try { 
+        const res = await axios.post(`${url}/changepassword`, data);
+        console.log(res.data)
+        localStorage.removeItem('token');
+        dispatch({
+            type: CHANGE,
+            message: res.data,
+        });
     } catch (err) {
         dispatch({
             type: ERROR,

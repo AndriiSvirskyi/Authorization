@@ -19,7 +19,7 @@ class Signup extends PureComponent {
             render={({ handleSubmit }) => (
             <div className="form-wrap">
                 <form className="form" onSubmit={handleSubmit}>
-                    <h3 style={{color: "red"}}>{this.props.message}</h3>
+                    <h3 className="alert">{this.props.message}</h3>
                 <h1>Registration</h1>
                     <div>
                     <label>

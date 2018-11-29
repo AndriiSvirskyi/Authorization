@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import App from './App';
 import Signup from './auth/Signup';
+import ChangePassword from './auth/changePassword';
 import Signin from './auth/Signin';
 import Content from './content/Content';
 import Users from './content/Users';
@@ -22,6 +23,7 @@ const Root = () => (
                 <Route path="/users" component={Users} />
                 <Route path="/signout" component={Signout} />
                 <Route path="/Home" component={Home} />
+                <Route path="/changepassword" component={ChangePassword} />
             </App>
         </Router>
     </Provider>
