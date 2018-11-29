@@ -9,6 +9,6 @@ const requireAuth = passport.authenticate('jwt', { session: false,  failureFlash
 routes.get('/public', (req, res) => res.send({ public: true }));
 routes.post('/signup', Authentication.signup);
 routes.post('/signin', requireSignin, Authentication.signin);
-routes.get('/protected', requireAuth, (req, res) => res.send({ user: req.user }));
+routes.get('/users', Authentication.getUsers);
 
 module.exports = routes;

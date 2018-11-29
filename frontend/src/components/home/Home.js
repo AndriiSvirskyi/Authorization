@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as authActions from '../../actions/auth';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Home extends Component {

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 import * as authActions from '../../actions/auth';
-import { Link } from 'react-router-dom';
 
 let z = ''
 class Signin extends PureComponent {

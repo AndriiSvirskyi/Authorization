@@ -1,8 +1,9 @@
-import { AUTH, ERROR } from '../actions/types';
+import { AUTH, ERROR, USERS } from '../actions/types';
 
 const INITIAL_STATE = {
   token: '',
-  message: ''
+  message: '',
+  users: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,6 +18,11 @@ export default (state = INITIAL_STATE, action) => {
         token: state.token,
         message: action.message
       };
+    case USERS:
+      return {
+        users: action.users,
+        token: action.token,
+    }
     default:
       return state;
   }

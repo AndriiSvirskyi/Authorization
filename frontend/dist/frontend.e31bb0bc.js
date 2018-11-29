@@ -40053,18 +40053,20 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ERROR = exports.AUTH = void 0;
+exports.USERS = exports.ERROR = exports.AUTH = void 0;
 var AUTH = 'AUTH';
 exports.AUTH = AUTH;
 var ERROR = 'ERROR';
 exports.ERROR = ERROR;
+var USERS = "USERS";
+exports.USERS = USERS;
 },{}],"src/actions/auth.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.signout = exports.signin = exports.signup = void 0;
+exports.getUsers = exports.signout = exports.signin = exports.signup = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -40139,7 +40141,7 @@ var signin = function signin(data, callback) {
       var _ref2 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(dispatch) {
-        var response, token, tokenserver;
+        var response, token;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -40151,32 +40153,29 @@ var signin = function signin(data, callback) {
               case 3:
                 response = _context2.sent;
                 token = response.data.token;
-                tokenserver = response.data.tokenserver;
-                console.log(tokenserver);
-                console.log(token);
                 dispatch({
                   type: _types.AUTH,
                   token: token
                 });
                 localStorage.setItem('token', token);
                 callback();
-                _context2.next = 16;
+                _context2.next = 13;
                 break;
 
-              case 13:
-                _context2.prev = 13;
+              case 10:
+                _context2.prev = 10;
                 _context2.t0 = _context2["catch"](0);
                 dispatch({
                   type: _types.ERROR,
                   message: 'You entered incorrect data'
                 });
 
-              case 16:
+              case 13:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 13]]);
+        }, _callee2, this, [[0, 10]]);
       }));
 
       return function (_x2) {
@@ -40197,6 +40196,66 @@ var signout = function signout(history) {
 };
 
 exports.signout = signout;
+
+var getUsers = function getUsers(token) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref3 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(dispatch) {
+        var AuthStr, res, users;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                AuthStr = 'Bearer '.concat(token);
+                _context3.next = 4;
+                return _axios.default.get("".concat(url, "/users"), {
+                  headers: {
+                    Authorization: AuthStr
+                  }
+                });
+
+              case 4:
+                res = _context3.sent;
+                users = res.data;
+                _context3.next = 8;
+                return dispatch({
+                  type: _types.USERS,
+                  users: users,
+                  token: token
+                });
+
+              case 8:
+                _context3.next = 13;
+                break;
+
+              case 10:
+                _context3.prev = 10;
+                _context3.t0 = _context3["catch"](0);
+                dispatch({
+                  type: _types.ERROR,
+                  message: 'you dont can to get users'
+                });
+
+              case 13:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 10]]);
+      }));
+
+      return function (_x3) {
+        return _ref3.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.getUsers = getUsers;
 },{"axios":"node_modules/axios/index.js","./types":"src/actions/types.js"}],"src/components/home/Header.js":[function(require,module,exports) {
 "use strict";
 
@@ -40265,7 +40324,11 @@ function (_PureComponent) {
         className: "button"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/signup"
-      }, "Sign up")))));
+      }, "Sign up")), _react.default.createElement("div", {
+        className: "button"
+      }, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/users"
+      }, "Users")))));
     }
   }]);
 
@@ -42535,8 +42598,6 @@ var _reactRedux = require("react-redux");
 
 var authActions = _interopRequireWildcard(require("../../actions/auth"));
 
-var _reactRouterDom = require("react-router-dom");
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -42641,7 +42702,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Signin);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js","react-router-dom":"node_modules/react-router-dom/es/index.js"}],"src/HOC/withAuth.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/HOC/withAuth.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42800,7 +42861,96 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)((0, _withAuth.default)(Content));
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","../../HOC/withAuth":"src/HOC/withAuth.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/Signout.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../../HOC/withAuth":"src/HOC/withAuth.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/content/Users.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var authActions = _interopRequireWildcard(require("../../actions/auth"));
+
+var _reactRedux = require("react-redux");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Users =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Users, _Component);
+
+  function Users(props) {
+    var _this;
+
+    _classCallCheck(this, Users);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Users).call(this, props));
+
+    _this.renderUser = function (users) {
+      return users.map(function (user, index) {
+        return _react.default.createElement("li", {
+          key: index
+        }, "email --- ".concat(user.email, " \n            password --- ").concat(user.password));
+      });
+    };
+
+    _this.getUsers = function () {
+      return _this.props.getUsers(_this.props.token);
+    };
+
+    return _this;
+  }
+
+  _createClass(Users, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.getUsers();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: "users-list"
+      }, _react.default.createElement("ul", null, this.props.users ? this.renderUser(this.props.users) : _react.default.createElement("div", null, "you are not authorization")));
+    }
+  }]);
+
+  return Users;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    message: state.auth.message,
+    token: state.auth.token,
+    users: state.auth.users
+  };
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Users);
+
+exports.default = _default;
+},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-redux":"node_modules/react-redux/es/index.js"}],"src/components/Signout.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42875,8 +43025,6 @@ var _react = _interopRequireWildcard(require("react"));
 
 var authActions = _interopRequireWildcard(require("../../actions/auth"));
 
-var _reactRouterDom = require("react-router-dom");
-
 var _reactRedux = require("react-redux");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -42930,7 +43078,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Home);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-router-dom":"node_modules/react-router-dom/es/index.js","react-redux":"node_modules/react-redux/es/index.js"}],"node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-redux":"node_modules/react-redux/es/index.js"}],"node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43415,7 +43563,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var INITIAL_STATE = {
   token: '',
-  message: ''
+  message: '',
+  users: ''
 };
 
 var _default = function _default() {
@@ -43432,6 +43581,12 @@ var _default = function _default() {
       return {
         token: state.token,
         message: action.message
+      };
+
+    case _types.USERS:
+      return {
+        users: action.users,
+        token: action.token
       };
 
     default:
@@ -43507,6 +43662,8 @@ var _Signin = _interopRequireDefault(require("./auth/Signin"));
 
 var _Content = _interopRequireDefault(require("./content/Content"));
 
+var _Users = _interopRequireDefault(require("./content/Users"));
+
 var _Signout = _interopRequireDefault(require("./Signout"));
 
 var _Home = _interopRequireDefault(require("./home/Home"));
@@ -43532,6 +43689,9 @@ var Root = function Root() {
     path: "/content",
     component: _Content.default
   }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/users",
+    component: _Users.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
     path: "/signout",
     component: _Signout.default
   }), _react.default.createElement(_reactRouterDom.Route, {
@@ -43542,7 +43702,7 @@ var Root = function Root() {
 
 var _default = Root;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./App":"src/components/App.js","./auth/Signup":"src/components/auth/Signup.js","./auth/Signin":"src/components/auth/Signin.js","./content/Content":"src/components/content/Content.js","./Signout":"src/components/Signout.js","./home/Home":"src/components/home/Home.js","../store":"src/store.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./App":"src/components/App.js","./auth/Signup":"src/components/auth/Signup.js","./auth/Signin":"src/components/auth/Signin.js","./content/Content":"src/components/content/Content.js","./content/Users":"src/components/content/Users.js","./Signout":"src/components/Signout.js","./home/Home":"src/components/home/Home.js","../store":"src/store.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -43583,7 +43743,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43637" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40639" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

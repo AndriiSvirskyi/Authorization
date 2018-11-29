@@ -14,6 +14,7 @@ class Header extends PureComponent {
                     <div className="button"><Link to="/content">Content</Link></div>
                     <div className="button"><Link to="/signin">Sign in</Link></div>
                     <div className="button"><Link to="/signup">Sign up</Link></div>
+                    <div className="button"><Link to="/users">Users</Link></div>
                 </div>    
             </div> 
         </nav>
