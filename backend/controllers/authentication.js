@@ -3,9 +3,6 @@ const jwtToken = require('jsonwebtoken');
 const config = require('../config');
 const User = require('../models/user');
 
-const compareToken = (user)=>{
-    return jwt.decode(getToken(user),config.secret)
-}
 const getToken = (user) => {
 const timestamp = Date.now();
 
@@ -14,6 +11,26 @@ const timestamp = Date.now();
         iat: timestamp
     }, config.secret);
 };
+
+const getPasswort = (token) => {
+    let authorization;
+    if(typeof token !== undefined) {
+        jwtToken.verify(token, config.secret, (err, authData)=>{
+            if(err){
+                authorization = false;
+            } else {
+                if(User.findOne( authData.sub )){
+                    authorization = true;
+                } else {
+                    authorization = false;
+                }
+            };
+        })
+    } else {
+        authorization = false;
+    }
+    return authorization;
+}
 
 exports.signin = (req, res, next) => {
     res.send({ token: getToken(req.user) });
@@ -47,33 +64,18 @@ exports.signup = async (req, res, next) => {
 };
 exports.getUsers = async (req, res, next) => {
     try {
-        let token = req.headers.authorization
+        let token = req.headers.authorization.split(' ')[1]
         const usersMongo = await User.find({});
         let users = [];
         usersMongo.forEach((user)=>{
             let email = user.email;
             let password = user.password
             users.push({email : email, password : password})
-        })
-        console.log(token)
-        if(typeof token !== undefined){
-            jwtToken.verify(token.split(' ')[1], config.secret, (err, authData)=>{
-                if(err){
-                    res.sendStatus(401);
-                }else{
-                    if(User.findOne( authData.sub )){
-                        res.send(users)
-                    }else{
-                        res.sendStatus(401)
-                    }
-                }
-            })
-            next();
-            } else {
-                res.sendStatus(401);
-            }
-        
-        
+        });
+
+        // validation token 
+        getPasswort(token) ? res.send(users) : res.status(401)
+
     } 
     catch(err) {
         next(err);
