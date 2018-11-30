@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH, ERROR, USERS, CHANGE, PERMISSION } from './types';
+import { AUTH, ERROR, USERS, CHANGE, PERMISSION, RECOVERY } from './types';
 
 const url = 'http://localhost:3001/api';
 
@@ -20,7 +20,7 @@ export const signup = (data, callback) => async dispatch => {
         const { message } = err.response.data;
         dispatch({
         type: ERROR,
-        message
+        messageSignUp : message
         });
     }
 };
@@ -39,7 +39,7 @@ export const signin = (data, callback) => async dispatch => {
     } catch (err) {
         dispatch({
             type: ERROR,
-            message: 'You entered incorrect data'
+            messageSignIn: 'You entered incorrect data'
         });
     }
 };
@@ -92,7 +92,6 @@ export const getPermission = (token) => async dispatch => {
 export const changePassword = (data) => async dispatch => {
     try { 
         const res = await axios.post(`${url}/changepassword`, data);
-        console.log(res.data)
         localStorage.removeItem('token');
         dispatch({
             type: CHANGE,
@@ -101,7 +100,22 @@ export const changePassword = (data) => async dispatch => {
     } catch (err) {
         dispatch({
             type: ERROR,
-            message: 'you dont can to get users'
+            message: 'you entered incorrect data'
+        });
+    }
+};
+
+export const recovery = (data) => async dispatch => {
+    try { 
+        const res = await axios.post(`${url}/recovery`, data);
+        dispatch({
+            type: RECOVERY,
+            message: "Password send to your email",
+        });
+    } catch (err) {
+        dispatch({
+            type: ERROR,
+            message: 'you entered incorrect data'
         });
     }
 };

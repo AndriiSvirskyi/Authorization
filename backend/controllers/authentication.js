@@ -4,7 +4,7 @@ const config = require('../config');
 
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-
+const nodemailer = require('nodemailer');
 const getToken = (user) => {
 const timestamp = Date.now();
 
@@ -94,7 +94,7 @@ exports.changePassword = async (req, res, next) => {
                     res.send('You have entered an incorrect password')
                 } else { 
                     User.findById(authData.sub, async (err, adventure) => {
-                        const appropriate = await bcrypt.compare(req.body.password, adventure.password, function(err, valid) {
+                        await bcrypt.compare(req.body.password, adventure.password, function(err, valid) {
                             if(valid){
                                 adventure.set({ password: req.body.newPassword });
                                 adventure.save(function (err, complete) {
@@ -120,6 +120,48 @@ exports.permission = (req, res, next) => {
         }else{
             res.send({"permission" : false})
         } 
+    } 
+    catch(err) {
+        next(err);
+    }
+};
+
+exports.recovery = (req, res, next) => {
+    try {    
+        User.find({ email: req.body.email}, async (err, docs) => {
+            console.log(docs)
+                docs.set({ password: "new"});
+                docs.save(function (err, complete) {
+            })
+            
+                
+        })
+        nodemailer.createTestAccount((err, account) => {
+            var transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    user: 'rollerdemon2@gmail.com',
+                    pass: 'rollerwar1' 
+                }
+            });
+            let mailOptions = {
+                from: 'rollerdemon2@gmail.com',
+                to: 'andriisvirskyi@gmail.com',
+                subject: "your new password",
+                text: 'new',
+            };
+        
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+            });
+        });
+        res.send(req.body)
     } 
     catch(err) {
         next(err);

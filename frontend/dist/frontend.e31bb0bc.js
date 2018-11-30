@@ -40053,7 +40053,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PERMISSION = exports.CHANGE = exports.USERS = exports.ERROR = exports.AUTH = void 0;
+exports.RECOVERY = exports.PERMISSION = exports.CHANGE = exports.USERS = exports.ERROR = exports.AUTH = void 0;
 var AUTH = 'AUTH';
 exports.AUTH = AUTH;
 var ERROR = 'ERROR';
@@ -40064,13 +40064,15 @@ var CHANGE = "CHANGE";
 exports.CHANGE = CHANGE;
 var PERMISSION = "PERMISSION";
 exports.PERMISSION = PERMISSION;
+var RECOVERY = "RECOVERY";
+exports.RECOVERY = RECOVERY;
 },{}],"src/actions/auth.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.changePassword = exports.getPermission = exports.getUsers = exports.signout = exports.signin = exports.signup = void 0;
+exports.recovery = exports.changePassword = exports.getPermission = exports.getUsers = exports.signout = exports.signin = exports.signup = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -40118,7 +40120,7 @@ var signup = function signup(data, callback) {
                 message = _context.t0.response.data.message;
                 dispatch({
                   type: _types.ERROR,
-                  message: message
+                  messageSignUp: message
                 });
 
               case 14:
@@ -40171,7 +40173,7 @@ var signin = function signin(data, callback) {
                 _context2.t0 = _context2["catch"](0);
                 dispatch({
                   type: _types.ERROR,
-                  message: 'You entered incorrect data'
+                  messageSignIn: 'You entered incorrect data'
                 });
 
               case 13:
@@ -40338,29 +40340,28 @@ var changePassword = function changePassword(data) {
 
               case 3:
                 res = _context5.sent;
-                console.log(res.data);
                 localStorage.removeItem('token');
                 dispatch({
                   type: _types.CHANGE,
                   message: res.data
                 });
-                _context5.next = 12;
+                _context5.next = 11;
                 break;
 
-              case 9:
-                _context5.prev = 9;
+              case 8:
+                _context5.prev = 8;
                 _context5.t0 = _context5["catch"](0);
                 dispatch({
                   type: _types.ERROR,
-                  message: 'you dont can to get users'
+                  message: 'you entered incorrect data'
                 });
 
-              case 12:
+              case 11:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, this, [[0, 9]]);
+        }, _callee5, this, [[0, 8]]);
       }));
 
       return function (_x5) {
@@ -40371,6 +40372,56 @@ var changePassword = function changePassword(data) {
 };
 
 exports.changePassword = changePassword;
+
+var recovery = function recovery(data) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref6 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee6(dispatch) {
+        var res;
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.prev = 0;
+                _context6.next = 3;
+                return _axios.default.post("".concat(url, "/recovery"), data);
+
+              case 3:
+                res = _context6.sent;
+                dispatch({
+                  type: _types.RECOVERY,
+                  message: "Password send to your email"
+                });
+                _context6.next = 10;
+                break;
+
+              case 7:
+                _context6.prev = 7;
+                _context6.t0 = _context6["catch"](0);
+                dispatch({
+                  type: _types.ERROR,
+                  message: 'you entered incorrect data'
+                });
+
+              case 10:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this, [[0, 7]]);
+      }));
+
+      return function (_x6) {
+        return _ref6.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.recovery = recovery;
 },{"axios":"node_modules/axios/index.js","./types":"src/actions/types.js"}],"src/components/home/Header.js":[function(require,module,exports) {
 "use strict";
 
@@ -40447,7 +40498,11 @@ function (_PureComponent) {
         className: "button"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/users"
-      }, "Users"))));
+      }, "Users")), _react.default.createElement("div", {
+        className: "button"
+      }, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/recoverypassword"
+      }, "Recovery password"))));
     }
   }]);
 
@@ -42692,7 +42747,7 @@ function (_PureComponent) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    message: state.auth.message
+    message: state.auth.messageSignUp
   };
 };
 
@@ -42813,13 +42868,118 @@ function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    message: state.auth.message,
+    message: state.auth.messageChangePassword,
     token: state.auth.token,
     permission: state.auth.permission
   };
 };
 
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(ChangePassword);
+
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/auth/recoveryPassword.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactFinalForm = require("react-final-form");
+
+var _reactRedux = require("react-redux");
+
+var authActions = _interopRequireWildcard(require("../../actions/auth"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var recoveryPassword =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(recoveryPassword, _Component);
+
+  function recoveryPassword() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
+    _classCallCheck(this, recoveryPassword);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(recoveryPassword)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.onSubmit = function (data) {
+      _this.props.recovery(data, function () {
+        _this.props.history.push('/');
+      });
+    }, _temp));
+  }
+
+  _createClass(recoveryPassword, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement("div", null, _react.default.createElement(_reactFinalForm.Form, {
+        onSubmit: this.onSubmit,
+        render: function render(_ref) {
+          var handleSubmit = _ref.handleSubmit;
+          return _react.default.createElement("div", {
+            className: "form-wrap"
+          }, _react.default.createElement("form", {
+            className: "form",
+            onSubmit: handleSubmit
+          }, _react.default.createElement("h1", null, "Recovery password"), _react.default.createElement("h4", {
+            className: "scusses"
+          }, _this2.props.message), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+            className: "email"
+          }, "Enter your mail"), _react.default.createElement(_reactFinalForm.Field, {
+            name: "email",
+            type: "text",
+            component: "input",
+            autoComplete: "on"
+          }))), _react.default.createElement("button", {
+            type: "success",
+            className: "button"
+          }, "Recovery password")));
+        }
+      }));
+    }
+  }]);
+
+  return recoveryPassword;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    message: state.auth.messageRecovery
+  };
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(recoveryPassword);
 
 exports.default = _default;
 },{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
@@ -42939,7 +43099,7 @@ function (_PureComponent) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    message: state.auth.message,
+    message: state.auth.messageSignIn,
     token: state.auth.token,
     permission: state.auth.permission
   };
@@ -43813,6 +43973,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var INITIAL_STATE = {
   token: '',
   message: '',
+  messageSignIn: '',
+  messageSignUp: '',
+  messageChangePassword: '',
   users: '',
   permission: ''
 };
@@ -43830,7 +43993,8 @@ var _default = function _default() {
     case _types.ERROR:
       return {
         token: state.token,
-        message: action.message
+        messageSignIn: action.messageSignIn,
+        messageSignUp: action.messageSignUp
       };
 
     case _types.USERS:
@@ -43841,15 +44005,19 @@ var _default = function _default() {
 
     case _types.CHANGE:
       return {
-        message: action.message,
+        messageChangePassword: action.message,
         token: state.token
       };
 
     case _types.PERMISSION:
       return {
-        message: action.message,
         permission: action.permission,
         token: action.token
+      };
+
+    case _types.RECOVERY:
+      return {
+        messageRecovery: action.message
       };
 
     default:
@@ -43923,6 +44091,8 @@ var _Signup = _interopRequireDefault(require("./auth/Signup"));
 
 var _changePassword = _interopRequireDefault(require("./auth/changePassword"));
 
+var _recoveryPassword = _interopRequireDefault(require("./auth/recoveryPassword"));
+
 var _Signin = _interopRequireDefault(require("./auth/Signin"));
 
 var _Content = _interopRequireDefault(require("./content/Content"));
@@ -43965,12 +44135,15 @@ var Root = function Root() {
   }), _react.default.createElement(_reactRouterDom.Route, {
     path: "/changepassword",
     component: _changePassword.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/recoverypassword",
+    component: _recoveryPassword.default
   }))));
 };
 
 var _default = Root;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./App":"src/components/App.js","./auth/Signup":"src/components/auth/Signup.js","./auth/changePassword":"src/components/auth/changePassword.js","./auth/Signin":"src/components/auth/Signin.js","./content/Content":"src/components/content/Content.js","./content/Users":"src/components/content/Users.js","./Signout":"src/components/Signout.js","./home/Home":"src/components/home/Home.js","../store":"src/store.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./App":"src/components/App.js","./auth/Signup":"src/components/auth/Signup.js","./auth/changePassword":"src/components/auth/changePassword.js","./auth/recoveryPassword":"src/components/auth/recoveryPassword.js","./auth/Signin":"src/components/auth/Signin.js","./content/Content":"src/components/content/Content.js","./content/Users":"src/components/content/Users.js","./Signout":"src/components/Signout.js","./home/Home":"src/components/home/Home.js","../store":"src/store.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -44011,7 +44184,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42275" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33619" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

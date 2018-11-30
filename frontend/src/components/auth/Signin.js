@@ -56,7 +56,7 @@ componentDidMount(){
 }
 
 const mapStateToProps = state => ({
-    message: state.auth.message,
+    message: state.auth.messageSignIn,
     token: state.auth.token,
     permission: state.auth.permission
 });

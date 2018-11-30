@@ -43,7 +43,7 @@ class Signup extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    message: state.auth.message
+    message: state.auth.messageSignUp
 });
 
 export default connect(mapStateToProps, authActions)(Signup);

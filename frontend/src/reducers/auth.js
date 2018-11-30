@@ -1,8 +1,11 @@
-import { AUTH, ERROR, USERS, CHANGE, PERMISSION } from '../actions/types';
+import { AUTH, ERROR, USERS, CHANGE, PERMISSION, RECOVERY } from '../actions/types';
 
 const INITIAL_STATE = {
   token: '',
   message: '',
+  messageSignIn : '',
+  messageSignUp : '',
+  messageChangePassword : '',
   users: '',
   permission: '',
 };
@@ -17,7 +20,8 @@ export default (state = INITIAL_STATE, action) => {
     case ERROR:
       return {
         token: state.token,
-        message: action.message
+        messageSignIn : action.messageSignIn,
+        messageSignUp : action.messageSignUp
       };
     case USERS:
       return {
@@ -26,14 +30,17 @@ export default (state = INITIAL_STATE, action) => {
     }
     case CHANGE:
       return {
-        message: action.message,
+        messageChangePassword: action.message,
         token: state.token,
     }
     case PERMISSION:
       return {
-        message: action.message,
         permission: action.permission,
         token: action.token,
+    }
+    case RECOVERY:
+      return {
+        messageRecovery: action.message,
     }
 
     default:

@@ -23,38 +23,37 @@ class ChangePassword extends Component {
             <div>
                 {this.props.permission ? 
                 <Form
-                onSubmit={this.onSubmit}
-                render={({ handleSubmit }) => (
-                    <div className="form-wrap">
-                        <form className="form" onSubmit={handleSubmit}>
-                        <h1>Change password</h1>
-                        <h4 className="alert">{this.props.message}</h4>
-                            <div>
-                                <label>
-                                    <div className="password">Current password</div>
-                                    <Field name="password" type="text" component="input" autoComplete="on" />
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <div className="password">New password</div>
-                                    <Field name="newPassword" type="text" component="input" autoComplete="on"/>
-                                </label>
-                            </div>
-                            <button type="submit" className="button">Change password</button>
-                        </form>
-                    </div>
-                )}
-            /> :
+                    onSubmit={this.onSubmit}
+                    render={({ handleSubmit }) => (
+                        <div className="form-wrap">
+                            <form className="form" onSubmit={handleSubmit}>
+                            <h1>Change password</h1>
+                            <h4 className="alert">{this.props.message}</h4>
+                                <div>
+                                    <label>
+                                        <div className="password">Current password</div>
+                                        <Field name="password" type="text" component="input" autoComplete="on" />
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <div className="password">New password</div>
+                                        <Field name="newPassword" type="text" component="input" autoComplete="on"/>
+                                    </label>
+                                </div>
+                                <button type="submit" className="button">Change password</button>
+                            </form>
+                        </div>
+                    )}
+                /> :
             <div className="alert">You are not authorization</div>
-            }
-                
+            }  
             </div>
         );
     }
 }
 const mapStateToProps = state => ({
-    message: state.auth.message,
+    message: state.auth.messageChangePassword,
     token: state.auth.token,
     permission: state.auth.permission
 });
