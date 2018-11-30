@@ -127,16 +127,14 @@ exports.permission = (req, res, next) => {
 };
 
 exports.recovery = (req, res, next) => {
-    try {    
+    try {
+        let password = Math.random().toFixed(7)*10000000;   
         User.find({ email: req.body.email}, async (err, docs) => {
-            console.log(docs)
-                docs.set({ password: "new"});
-                docs.save(function (err, complete) {
-            })
-            
-                
+            docs[0].set({ password: password });
+            docs[0].save(function (err, complete) {});
         })
         nodemailer.createTestAccount((err, account) => {
+            console.log('hello')
             var transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
@@ -144,19 +142,24 @@ exports.recovery = (req, res, next) => {
                 auth: {
                     user: 'rollerdemon2@gmail.com',
                     pass: 'rollerwar1' 
+                },
+                tls: {
+                    rejectUnauthorized: false
                 }
             });
             let mailOptions = {
                 from: 'rollerdemon2@gmail.com',
                 to: 'andriisvirskyi@gmail.com',
                 subject: "your new password",
-                text: 'new',
+                text: password + '',
             };
         
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
+                    console.log('EEEEEEEEEEEEERRRRRRRRRRRRROOOOOOOOOOOOOOOOOORRRRRRRRRR')
                     return console.log(error);
                 }
+                console.log('yeeeeeeeeeeeeeeeeeeeeeeeeeeesssssssssssss')
                 console.log('Message sent: %s', info.messageId);
                 console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
             });
