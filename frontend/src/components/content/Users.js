@@ -8,7 +8,7 @@ class Users extends Component {
         this.getUsers = ()=>this.props.getUsers(this.props.token)
     }
     componentDidMount() {
-        this.getUsers()
+        this.getUsers();
     }
     renderUser = (users) =>{
         return users.map((user, index) => {
@@ -30,6 +30,7 @@ class Users extends Component {
 const mapStateToProps = state => ({
     message: state.auth.message,
     token: state.auth.token,
-    users: state.auth.users
+    users: state.auth.users,
+    permission: state.auth.permission
 });
 export default connect(mapStateToProps, authActions)(Users);

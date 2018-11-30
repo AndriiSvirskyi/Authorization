@@ -34,7 +34,7 @@ const getPasswort = (token) => {
     return authorization;
 }
 
-exports.signin = (req, res, next) => {
+exports.signin = (req, res, next) => {    
     res.send({ token: getToken(req.user) });
 };
 
@@ -112,16 +112,13 @@ exports.changePassword = async (req, res, next) => {
     }
 };
 
-exports.permission = async (req, res, next) => {
+exports.permission = (req, res, next) => {
     try {
         let token = req.headers.authorization.split(' ')[1]
-        console.log(token)
         if(token){
-            console.log('2')
-            getPasswort(token) ? res.send(true) : res.send(false)
+            getPasswort(token) ? res.send({token, "permission" : true}) : res.send({"permission" : false})
         }else{
-            console.log('3')
-            res.send(false);
+            res.send({"permission" : false})
         } 
     } 
     catch(err) {

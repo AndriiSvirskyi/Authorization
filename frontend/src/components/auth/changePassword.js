@@ -11,7 +11,7 @@ class ChangePassword extends Component {
     componentDidMount() {
         this.getPermission()
     }
-   
+
     onSubmit = data => {
         data.token = this.props.token;
         this.props.changePassword(data, () => {

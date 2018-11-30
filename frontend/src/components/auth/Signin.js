@@ -2,19 +2,27 @@ import React, { PureComponent } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 import * as authActions from '../../actions/auth';
+import { stat } from 'fs';
 
-let z = ''
 class Signin extends PureComponent {
+    constructor(props){
+        super(props)
+        this.getPermission = ()=> this.props.getPermission(this.props.token)
+}
+componentDidMount(){
+    this.getPermission();
+}
     onSubmit = data => {
         this.props.signin(data, () => {
             this.props.history.push('/content');
         });
     }
+
     render() {
         
         return (
-            this.props.token ? 
-                <div>You are already logged in, if you want to log in to another account, exit the current one
+            this.props.permission ? 
+                <div><span>You are already logged in, if you want to log in to another account, exit the current one</span>
                     <div className="button" onClick={this.props.signout}>Sign out</div>
                 </div>
             :
@@ -49,7 +57,8 @@ class Signin extends PureComponent {
 
 const mapStateToProps = state => ({
     message: state.auth.message,
-    token: state.auth.token
+    token: state.auth.token,
+    permission: state.auth.permission
 });
 
 export default connect(mapStateToProps, authActions)(Signin);

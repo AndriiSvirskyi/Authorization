@@ -22,16 +22,18 @@ export default (state = INITIAL_STATE, action) => {
     case USERS:
       return {
         users: action.users,
-        token: action.token,
+        token: state.token,
     }
     case CHANGE:
       return {
-        message: action.message
+        message: action.message,
+        token: state.token,
     }
     case PERMISSION:
       return {
         message: action.message,
-        permission: action.permission
+        permission: action.permission,
+        token: action.token,
     }
 
     default:

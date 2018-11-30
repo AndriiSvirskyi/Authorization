@@ -76,12 +76,14 @@ export const getPermission = (token) => async dispatch => {
         const res = await axios.get(`${url}/permission`, { headers: { Authorization: AuthStr } });
         await dispatch({
             type: PERMISSION,
-            permission : res.data,
+            permission : res.data.permission,
+            token: res.data.token
         })   
     } catch (err) {
         dispatch({
             type: ERROR,
-            message: 'You are not registered'
+            message: 'You are not registered',
+            token,
         });
     }
 };
