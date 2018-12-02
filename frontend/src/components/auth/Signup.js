@@ -19,18 +19,18 @@ class Signup extends PureComponent {
             render={({ handleSubmit }) => (
             <div className="form-wrap">
                 <form className="form" onSubmit={handleSubmit}>
-                    <h3 className="alert">{this.props.message}</h3>
+                    <h3 className="alert">{this.props.messageSignUp}</h3>
                 <h1>Registration</h1>
                     <div>
                     <label>
                         <div className="email">Email</div>
-                        <Field name="email" type="text" component="input" autoComplete="off"/>
+                        <Field name="email" type="email" component="input" autoComplete="off" required/>
                     </label>
                     </div>
                     <div>
                         <label>
                             <div className="password">Password</div>
-                            <Field name="password" type="password" component="input" autoComplete="off"/>
+                            <Field name="password" type="password" component="input" autoComplete="off" required/>
                         </label>
                     </div>
                     <button type="submit" className="button">Sign Up</button>
@@ -43,7 +43,7 @@ class Signup extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    message: state.auth.messageSignUp
+    messageSignUp: state.auth.messageSignUp
 });
 
 export default connect(mapStateToProps, authActions)(Signup);

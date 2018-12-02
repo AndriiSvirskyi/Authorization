@@ -27,6 +27,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         users: action.users,
         token: state.token,
+        permission: action.permission
     }
     case CHANGE:
       return {

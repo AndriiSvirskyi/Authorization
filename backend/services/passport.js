@@ -21,7 +21,7 @@ const config = require('../config');
         }
         return done(null, user);
     } catch(err) {
-        done(message);
+        done(err);
     }
     });
 

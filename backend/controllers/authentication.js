@@ -156,10 +156,8 @@ exports.recovery = (req, res, next) => {
         
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    console.log('EEEEEEEEEEEEERRRRRRRRRRRRROOOOOOOOOOOOOOOOOORRRRRRRRRR')
                     return console.log(error);
                 }
-                console.log('yeeeeeeeeeeeeeeeeeeeeeeeeeeesssssssssssss')
                 console.log('Message sent: %s', info.messageId);
                 console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
             });

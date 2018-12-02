@@ -10,13 +10,17 @@ class Header extends PureComponent {
         return (
         <nav>
             <div className="link-block">
-                <div className="button"><Link to="/">Home</Link></div>
-                <div className="button"><Link to="/content">Content</Link></div>
-                <div className="button"><Link to="/signin">Sign in</Link></div>
-                <div className="button"><Link to="/signup">Sign up</Link></div>
-                <div className="button"><Link to="/changepassword">Change password</Link></div>
-                <div className="button"><Link to="/users">Users</Link></div>     
-                <div className="button"><Link to="/recoverypassword">Recovery password</Link></div>     
+                <div className="navigation">
+                    <div className="button"><Link to="/">Home</Link></div>
+                    <div className="button"><Link to="/content">Content</Link></div>
+                    <div className="button"><Link to="/users">Users</Link></div>     
+                </div>
+                <div className="settings">
+                    <div className="button"><Link to="/signin">Sign in</Link></div>
+                    <div className="button"><Link to="/signup">Sign up</Link></div>
+                    <div className="button"><Link to="/changepassword">Change password</Link></div>
+                    <div className="button"><Link to="/recoverypassword">Recovery password</Link></div>     
+                </div>
             </div> 
         </nav>
         );

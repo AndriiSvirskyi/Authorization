@@ -57605,7 +57605,8 @@ var getUsers = function getUsers(token) {
                 _context3.next = 8;
                 return dispatch({
                   type: _types.USERS,
-                  users: users
+                  users: users,
+                  permission: true
                 });
 
               case 8:
@@ -57850,6 +57851,8 @@ function (_PureComponent) {
       return _react.default.createElement("nav", null, _react.default.createElement("div", {
         className: "link-block"
       }, _react.default.createElement("div", {
+        className: "navigation"
+      }, _react.default.createElement("div", {
         className: "button"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
@@ -57858,6 +57861,12 @@ function (_PureComponent) {
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/content"
       }, "Content")), _react.default.createElement("div", {
+        className: "button"
+      }, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/users"
+      }, "Users"))), _react.default.createElement("div", {
+        className: "settings"
+      }, _react.default.createElement("div", {
         className: "button"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/signin"
@@ -57872,12 +57881,8 @@ function (_PureComponent) {
       }, "Change password")), _react.default.createElement("div", {
         className: "button"
       }, _react.default.createElement(_reactRouterDom.Link, {
-        to: "/users"
-      }, "Users")), _react.default.createElement("div", {
-        className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/recoverypassword"
-      }, "Recovery password"))));
+      }, "Recovery password")))));
     }
   }]);
 
@@ -60094,20 +60099,22 @@ function (_PureComponent) {
             onSubmit: handleSubmit
           }, _react.default.createElement("h3", {
             className: "alert"
-          }, _this2.props.message), _react.default.createElement("h1", null, "Registration"), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _this2.props.messageSignUp), _react.default.createElement("h1", null, "Registration"), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "email"
           }, "Email"), _react.default.createElement(_reactFinalForm.Field, {
             name: "email",
-            type: "text",
+            type: "email",
             component: "input",
-            autoComplete: "off"
+            autoComplete: "off",
+            required: true
           }))), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "password"
           }, "Password"), _react.default.createElement(_reactFinalForm.Field, {
             name: "password",
             type: "password",
             component: "input",
-            autoComplete: "off"
+            autoComplete: "off",
+            required: true
           }))), _react.default.createElement("button", {
             type: "submit",
             className: "button"
@@ -60122,14 +60129,106 @@ function (_PureComponent) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    message: state.auth.messageSignUp
+    messageSignUp: state.auth.messageSignUp
   };
 };
 
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Signup);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/auth/changePassword.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/HOC/withAuth.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactRedux = require("react-redux");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var withAuth = function withAuth(WrappedComponent) {
+  var ComposedComponent =
+  /*#__PURE__*/
+  function (_PureComponent) {
+    _inherits(ComposedComponent, _PureComponent);
+
+    function ComposedComponent(props) {
+      var _this;
+
+      _classCallCheck(this, ComposedComponent);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(ComposedComponent).call(this, props));
+
+      _this.getPermission = function () {
+        return _this.props.getPermission(_this.props.token);
+      };
+
+      return _this;
+    }
+
+    _createClass(ComposedComponent, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this.getPermission();
+        this.checkAuthorization();
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {
+        this.checkAuthorization();
+      }
+    }, {
+      key: "checkAuthorization",
+      value: function checkAuthorization() {
+        if (!this.props.permission) {
+          this.props.history.push('/');
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return _react.default.createElement(WrappedComponent, this.props);
+      }
+    }]);
+
+    return ComposedComponent;
+  }(_react.PureComponent);
+
+  var mapStateToProps = function mapStateToProps(state) {
+    return {
+      token: state.auth.token,
+      permission: state.auth.permission
+    };
+  };
+
+  return (0, _reactRedux.connect)(mapStateToProps)(ComposedComponent);
+};
+
+var _default = withAuth;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js"}],"src/components/auth/changePassword.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60144,6 +60243,10 @@ var _reactFinalForm = require("react-final-form");
 var _reactRedux = require("react-redux");
 
 var authActions = _interopRequireWildcard(require("../../actions/auth"));
+
+var _withAuth = _interopRequireDefault(require("../../HOC/withAuth"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -60170,34 +60273,29 @@ var ChangePassword =
 function (_Component) {
   _inherits(ChangePassword, _Component);
 
-  function ChangePassword(props) {
+  function ChangePassword() {
+    var _getPrototypeOf2;
+
     var _this;
+
+    var _temp;
 
     _classCallCheck(this, ChangePassword);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChangePassword).call(this, props));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.onSubmit = function (data) {
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ChangePassword)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.onSubmit = function (data) {
       data.token = _this.props.token;
 
       _this.props.changePassword(data, function () {
         _this.props.history.push('/');
       });
-    };
-
-    _this.getPermission = function () {
-      return _this.props.getPermission(_this.props.token);
-    };
-
-    return _this;
+    }, _temp));
   }
 
   _createClass(ChangePassword, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.getPermission();
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -60249,10 +60347,10 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(ChangePassword);
+var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)((0, _withAuth.default)(ChangePassword));
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/auth/recoveryPassword.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js","../../HOC/withAuth":"src/HOC/withAuth.js"}],"src/components/auth/recoveryPassword.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60430,7 +60528,11 @@ function (_PureComponent) {
     value: function render() {
       var _this2 = this;
 
-      return this.props.permission ? _react.default.createElement("div", null, _react.default.createElement("span", null, "You are already logged in, if you want to log in to another account, exit the current one"), _react.default.createElement("div", {
+      return this.props.permission ? _react.default.createElement("div", {
+        className: "content"
+      }, _react.default.createElement("span", {
+        className: "b-text"
+      }, "You are already logged in, if you want to log in to another account, exit the current one"), _react.default.createElement("div", {
         className: "button",
         onClick: this.props.signout
       }, "Sign out")) : _react.default.createElement(_reactFinalForm.Form, {
@@ -60444,20 +60546,22 @@ function (_PureComponent) {
             onSubmit: handleSubmit
           }, _react.default.createElement("h1", null, "Authorization"), _react.default.createElement("h4", {
             className: "alert"
-          }, _this2.props.message), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _this2.props.messageSignIn), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "email"
           }, "Email"), _react.default.createElement(_reactFinalForm.Field, {
             name: "email",
-            type: "text",
+            type: "email",
             component: "input",
-            autoComplete: "on"
+            autoComplete: "on",
+            required: true
           }))), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "password"
           }, "Password"), _react.default.createElement(_reactFinalForm.Field, {
             name: "password",
             type: "password",
             component: "input",
-            autoComplete: "on"
+            autoComplete: "on",
+            required: true
           }))), _react.default.createElement("button", {
             type: "submit",
             className: "button"
@@ -60472,7 +60576,7 @@ function (_PureComponent) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    message: state.auth.messageSignIn,
+    messageSignIn: state.auth.messageSignIn,
     token: state.auth.token,
     permission: state.auth.permission
   };
@@ -60481,89 +60585,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Signin);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js","fs":"node_modules/parcel-bundler/src/builtins/_empty.js"}],"src/HOC/withAuth.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _reactRedux = require("react-redux");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var withAuth = function withAuth(WrappedComponent) {
-  var ComposedComponent =
-  /*#__PURE__*/
-  function (_PureComponent) {
-    _inherits(ComposedComponent, _PureComponent);
-
-    function ComposedComponent() {
-      _classCallCheck(this, ComposedComponent);
-
-      return _possibleConstructorReturn(this, _getPrototypeOf(ComposedComponent).apply(this, arguments));
-    }
-
-    _createClass(ComposedComponent, [{
-      key: "componentDidMount",
-      value: function componentDidMount() {
-        this.checkAuthorization();
-      }
-    }, {
-      key: "componentDidUpdate",
-      value: function componentDidUpdate() {
-        this.checkAuthorization();
-      }
-    }, {
-      key: "checkAuthorization",
-      value: function checkAuthorization() {
-        if (!this.props.token) {
-          this.props.history.push('/');
-        }
-      }
-    }, {
-      key: "render",
-      value: function render() {
-        return _react.default.createElement(WrappedComponent, this.props);
-      }
-    }]);
-
-    return ComposedComponent;
-  }(_react.PureComponent);
-
-  var mapStateToProps = function mapStateToProps(state) {
-    return {
-      token: state.auth.token
-    };
-  };
-
-  return (0, _reactRedux.connect)(mapStateToProps)(ComposedComponent);
-};
-
-var _default = withAuth;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js"}],"src/components/content/Content.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js","fs":"node_modules/parcel-bundler/src/builtins/_empty.js"}],"src/components/content/Content.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60710,7 +60732,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
-        className: "users-list"
+        className: "content"
       }, _react.default.createElement("ul", null, this.props.users ? this.renderUser(this.props.users) : _react.default.createElement("div", {
         className: "alert"
       }, "you are not authorization")));
@@ -60843,7 +60865,11 @@ function (_Component) {
   _createClass(Home, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", null, "This is home");
+      return _react.default.createElement("div", {
+        className: "content"
+      }, _react.default.createElement("div", {
+        className: "b-text"
+      }, "This is home"));
     }
   }]);
 
@@ -61373,7 +61399,8 @@ var _default = function _default() {
     case _types.USERS:
       return {
         users: action.users,
-        token: state.token
+        token: state.token,
+        permission: action.permission
       };
 
     case _types.CHANGE:
@@ -61557,7 +61584,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58685" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49744" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

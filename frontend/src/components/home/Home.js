@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 class Home extends Component {
     render() {
         return (
-            <div>
-                This is home
+            <div className="content">
+                <div className="b-text">This is home</div>
             </div>
         );
     }

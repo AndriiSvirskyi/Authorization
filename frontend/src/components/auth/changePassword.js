@@ -2,15 +2,9 @@ import React, { Component } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 import * as authActions from '../../actions/auth';
+import withAuth from '../../HOC/withAuth';
 
 class ChangePassword extends Component {
-    constructor(props){
-        super(props)
-        this.getPermission = ()=> this.props.getPermission(this.props.token)
-    }
-    componentDidMount() {
-        this.getPermission()
-    }
 
     onSubmit = data => {
         data.token = this.props.token;
@@ -58,4 +52,4 @@ const mapStateToProps = state => ({
     permission: state.auth.permission
 });
 
-export default connect(mapStateToProps, authActions)(ChangePassword);
+export default connect(mapStateToProps, authActions)(withAuth(ChangePassword));

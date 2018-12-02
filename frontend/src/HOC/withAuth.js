@@ -4,16 +4,21 @@ import { connect } from 'react-redux';
 
 const withAuth = WrappedComponent => {
   class ComposedComponent extends PureComponent {
+    constructor(props){
+      super(props)
+      this.getPermission = ()=> this.props.getPermission(this.props.token)
+    }
     componentDidMount() {
-      this.checkAuthorization();
+      this.getPermission();
+      this.checkAuthorization()
     }
 
     componentDidUpdate() {
-      this.checkAuthorization();
+      this.checkAuthorization()
     }
 
     checkAuthorization() {
-      if (!this.props.token) {
+      if (!this.props.permission) {
         this.props.history.push('/');
       }
     }
@@ -26,7 +31,8 @@ const withAuth = WrappedComponent => {
   }
 
   const mapStateToProps = state => ({
-    token: state.auth.token
+    token: state.auth.token,
+    permission: state.auth.permission
   });
 
   return connect(mapStateToProps)(ComposedComponent);

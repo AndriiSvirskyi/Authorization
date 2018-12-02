@@ -22,7 +22,7 @@ componentDidMount(){
         
         return (
             this.props.permission ? 
-                <div><span>You are already logged in, if you want to log in to another account, exit the current one</span>
+                <div className="content"><span className="b-text">You are already logged in, if you want to log in to another account, exit the current one</span>
                     <div className="button" onClick={this.props.signout}>Sign out</div>
                 </div>
             :
@@ -33,17 +33,17 @@ componentDidMount(){
                         <form className="form" onSubmit={handleSubmit}>
 
                         <h1>Authorization</h1>
-                        <h4 className="alert">{this.props.message}</h4>
+                        <h4 className="alert">{this.props.messageSignIn}</h4>
                             <div>
                                 <label>
                                     <div className="email">Email</div>
-                                    <Field name="email" type="text" component="input" autoComplete="on" />
+                                    <Field name="email" type="email" component="input" autoComplete="on" required />
                                 </label>
                             </div>
                             <div>
                                 <label>
                                     <div className="password">Password</div>
-                                    <Field name="password" type="password" component="input" autoComplete="on"/>
+                                    <Field name="password" type="password" component="input" autoComplete="on" required/>
                                 </label>
                             </div>
                             <button type="submit" className="button">Sign In</button>
@@ -56,7 +56,7 @@ componentDidMount(){
 }
 
 const mapStateToProps = state => ({
-    message: state.auth.messageSignIn,
+    messageSignIn: state.auth.messageSignIn,
     token: state.auth.token,
     permission: state.auth.permission
 });

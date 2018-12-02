@@ -15,7 +15,7 @@ export const signup = (data, callback) => async dispatch => {
         localStorage.setItem('token', token);
 
         callback();
-    } 
+    }
     catch (err) {
         const { message } = err.response.data;
         dispatch({
@@ -61,6 +61,7 @@ export const getUsers = (token) => async dispatch => {
         await dispatch({
             type: USERS,
             users : users,
+            permission : true,
         })   
     } catch (err) {
         dispatch({

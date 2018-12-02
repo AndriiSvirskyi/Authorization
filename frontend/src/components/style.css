@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 70vh;
 }
 .form{
     display: flex;
@@ -31,6 +31,7 @@ a{
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 input{
     width: 100%;
@@ -45,10 +46,11 @@ input{
     font-size: 24px;
     }
 .content{
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
 }
 
 nav {
@@ -74,4 +76,12 @@ nav a:last-child {
     font-size: 24px;
     text-align: center;
     color: rgb(79, 192, 103);
+}
+
+.home{
+    font-size: 30px;
+
+}
+.b-text{
+    font-size: 30px;
 }
