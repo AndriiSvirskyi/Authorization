@@ -21,7 +21,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         token: state.token,
         messageSignIn : action.messageSignIn,
-        messageSignUp : action.messageSignUp
+        messageSignUp : action.messageSignUp,
+        messageChangePassword: action.messageChangePassword
       };
     case USERS:
       return {
@@ -33,6 +34,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         messageChangePassword: action.message,
         token: state.token,
+        permission: action.permission
     }
     case PERMISSION:
       return {

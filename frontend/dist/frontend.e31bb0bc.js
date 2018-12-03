@@ -40346,7 +40346,8 @@ var changePassword = function changePassword(data) {
                 dispatch({
                   type: _types.CHANGE,
                   message: res.data.message,
-                  token: res.data.token
+                  token: res.data.token,
+                  permission: true
                 });
                 _context5.next = 12;
                 break;
@@ -40356,7 +40357,7 @@ var changePassword = function changePassword(data) {
                 _context5.t0 = _context5["catch"](0);
                 dispatch({
                   type: _types.ERROR,
-                  message: "You have entered an incorrect password"
+                  messageChangePassword: "You have entered an incorrect password"
                 });
 
               case 12:
@@ -40483,11 +40484,6 @@ function (_PureComponent) {
   _createClass(Header, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.getPermission();
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
       this.getPermission();
     }
   }, {
@@ -42847,7 +42843,6 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      console.log(this.props.messageChangePassword);
       return _react.default.createElement(_reactFinalForm.Form, {
         onSubmit: this.onSubmit,
         render: function render(_ref) {
@@ -42859,7 +42854,7 @@ function (_Component) {
             onSubmit: handleSubmit
           }, _react.default.createElement("h1", null, "Change password"), _react.default.createElement("h4", {
             className: "alert"
-          }, _this2.props.messageChangePassword), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _this2.props.messageChangePassword || _this2.props.message), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "password"
           }, "Current password"), _react.default.createElement(_reactFinalForm.Field, {
             name: "password",
@@ -42894,6 +42889,7 @@ function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     messageChangePassword: state.auth.messageChangePassword,
+    message: state.auth.message,
     token: state.auth.token,
     permission: state.auth.permission
   };
@@ -43123,8 +43119,7 @@ function (_PureComponent) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     messageSignIn: state.auth.messageSignIn,
-    token: state.auth.token,
-    permission: state.auth.permission
+    token: state.auth.token
   };
 };
 
@@ -43862,7 +43857,8 @@ var _default = function _default() {
       return {
         token: state.token,
         messageSignIn: action.messageSignIn,
-        messageSignUp: action.messageSignUp
+        messageSignUp: action.messageSignUp,
+        messageChangePassword: action.messageChangePassword
       };
 
     case _types.USERS:
@@ -43875,7 +43871,8 @@ var _default = function _default() {
     case _types.CHANGE:
       return {
         messageChangePassword: action.message,
-        token: state.token
+        token: state.token,
+        permission: action.permission
       };
 
     case _types.PERMISSION:
@@ -43994,9 +43991,6 @@ var Root = function Root() {
     path: "/signout",
     component: _Signout.default
   }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/Home",
-    component: _Home.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
     path: "/changepassword",
     component: _changePassword.default
   }), _react.default.createElement(_reactRouterDom.Route, {
@@ -44048,7 +44042,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44585" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36943" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

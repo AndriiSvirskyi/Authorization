@@ -6,10 +6,10 @@ const withAuth = WrappedComponent => {
   class ComposedComponent extends PureComponent {
     constructor(props){
       super(props)
-      this.getPermission = ()=> this.props.getPermission(this.props.token)
+
     }
     componentDidMount() {
-      this.getPermission();
+
       this.checkAuthorization()
     }
 

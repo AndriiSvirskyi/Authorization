@@ -10,10 +10,7 @@ class Header extends PureComponent {
         this.getPermission = ()=>this.props.getPermission(this.props.token)
     }
     componentDidMount(){
-        this.getPermission();
-    }
-    componentDidUpdate(){
-        this.getPermission();
+        this.getPermission()
     }
     render() {
         return (

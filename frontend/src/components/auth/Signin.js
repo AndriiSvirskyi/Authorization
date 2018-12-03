@@ -48,7 +48,6 @@ class Signin extends PureComponent {
 const mapStateToProps = state => ({
     messageSignIn: state.auth.messageSignIn,
     token: state.auth.token,
-    permission: state.auth.permission
 });
 
 export default connect(mapStateToProps, authActions)(Signin);

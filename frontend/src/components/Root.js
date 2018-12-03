@@ -21,7 +21,6 @@ const Root = () => (
                 <Route path="/signup" component={Signup} />
                 <Route path="/users" component={Users} />
                 <Route path="/signout" component={Signout} />
-                <Route path="/Home" component={Home} />
                 <Route path="/changepassword" component={ChangePassword} />
                 <Route path="/recoverypassword" component={RecoveryPassword} />
             </App>

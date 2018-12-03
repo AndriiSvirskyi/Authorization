@@ -98,12 +98,13 @@ export const changePassword = (data) => async dispatch => {
         dispatch({
             type: CHANGE,
             message: res.data.message,
-            token: res.data.token
+            token: res.data.token,
+            permission: true
         });
     } catch (err) {
         dispatch({
             type: ERROR,
-            message: "You have entered an incorrect password"
+            messageChangePassword: "You have entered an incorrect password"
         });
     }
 };

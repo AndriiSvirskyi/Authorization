@@ -12,7 +12,6 @@ class ChangePassword extends Component {
         });
     }
     render() {
-        console.log(this.props.messageChangePassword)
         return (
             <Form
                 onSubmit={this.onSubmit}
@@ -20,7 +19,7 @@ class ChangePassword extends Component {
                     <div className="form-wrap">
                         <form className="form" onSubmit={handleSubmit}>
                         <h1>Change password</h1>
-                        <h4 className="alert">{this.props.messageChangePassword}</h4>
+                        <h4 className="alert">{this.props.messageChangePassword || this.props.message}</h4>
                             <div>
                                 <label>
                                     <div className="password">Current password</div>
@@ -46,6 +45,7 @@ class ChangePassword extends Component {
 }
 const mapStateToProps = state => ({
     messageChangePassword: state.auth.messageChangePassword,
+    message: state.auth.message,
     token: state.auth.token,
     permission: state.auth.permission
 });
