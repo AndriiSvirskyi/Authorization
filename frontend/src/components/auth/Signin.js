@@ -2,30 +2,17 @@ import React, { PureComponent } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 import * as authActions from '../../actions/auth';
-import { stat } from 'fs';
+import { Link } from 'react-router-dom';
 
 class Signin extends PureComponent {
-    constructor(props){
-        super(props)
-        this.getPermission = ()=> this.props.getPermission(this.props.token)
-}
-componentDidMount(){
-    this.getPermission();
-}
     onSubmit = data => {
         this.props.signin(data, () => {
-            this.props.history.push('/content');
+            this.props.history.push('/');
         });
     }
 
     render() {
-        
         return (
-            this.props.permission ? 
-                <div className="content"><span className="b-text">You are already logged in, if you want to log in to another account, exit the current one</span>
-                    <div className="button" onClick={this.props.signout}>Sign out</div>
-                </div>
-            :
             <Form
                 onSubmit={this.onSubmit}
                 render={({ handleSubmit }) => (
@@ -46,7 +33,10 @@ componentDidMount(){
                                     <Field name="password" type="password" component="input" autoComplete="on" required/>
                                 </label>
                             </div>
-                            <button type="submit" className="button">Sign In</button>
+                            <div className="button-link">
+                                <button type="submit" className="button">Sign In</button>
+                                <div className="button"><Link to="/recoverypassword">Recovery password</Link></div>
+                            </div>
                         </form>
                     </div>
                 )}

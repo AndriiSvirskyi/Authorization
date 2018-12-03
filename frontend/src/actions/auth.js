@@ -39,7 +39,7 @@ export const signin = (data, callback) => async dispatch => {
     } catch (err) {
         dispatch({
             type: ERROR,
-            messageSignIn: 'You entered incorrect data'
+            messageSignIn: 'login or password is incorrect'
         });
     }
 };
@@ -93,15 +93,17 @@ export const getPermission = (token) => async dispatch => {
 export const changePassword = (data) => async dispatch => {
     try { 
         const res = await axios.post(`${url}/changepassword`, data);
-        localStorage.removeItem('token');
+        localStorage.setItem('token', res.data.token);
+        console.log(res.data)
         dispatch({
             type: CHANGE,
-            message: res.data,
+            message: res.data.message,
+            token: res.data.token
         });
     } catch (err) {
         dispatch({
             type: ERROR,
-            message: 'you entered incorrect data'
+            message: "You have entered an incorrect password"
         });
     }
 };

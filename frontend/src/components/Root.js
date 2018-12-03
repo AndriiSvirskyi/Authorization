@@ -7,7 +7,6 @@ import Signup from './auth/Signup';
 import ChangePassword from './auth/changePassword';
 import RecoveryPassword from './auth/recoveryPassword';
 import Signin from './auth/Signin';
-import Content from './content/Content';
 import Users from './content/Users';
 import Signout from './Signout';
 import Home from './home/Home';
@@ -20,7 +19,6 @@ const Root = () => (
                 <Route path="/" exact component={Home} />
                 <Route path="/signin" component={Signin} />
                 <Route path="/signup" component={Signup} />
-                <Route path="/content" component={Content} />
                 <Route path="/users" component={Users} />
                 <Route path="/signout" component={Signout} />
                 <Route path="/Home" component={Home} />

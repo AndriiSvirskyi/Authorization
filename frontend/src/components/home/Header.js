@@ -5,30 +5,41 @@ import * as authActions from '../../actions/auth';
 
 
 class Header extends PureComponent {
-    
+    constructor(props){
+        super(props);
+        this.getPermission = ()=>this.props.getPermission(this.props.token)
+    }
+    componentDidMount(){
+        this.getPermission();
+    }
+    componentDidUpdate(){
+        this.getPermission();
+    }
     render() {
         return (
         <nav>
-            <div className="link-block">
-                <div className="navigation">
-                    <div className="button"><Link to="/">Home</Link></div>
-                    <div className="button"><Link to="/content">Content</Link></div>
-                    <div className="button"><Link to="/users">Users</Link></div>     
-                </div>
-                <div className="settings">
-                    <div className="button"><Link to="/signin">Sign in</Link></div>
-                    <div className="button"><Link to="/signup">Sign up</Link></div>
-                    <div className="button"><Link to="/changepassword">Change password</Link></div>
-                    <div className="button"><Link to="/recoverypassword">Recovery password</Link></div>     
-                </div>
-            </div> 
+                {!this.props.permission ?
+                    <div className="navigation">
+                        <div className="button"><Link to="/">Home</Link></div>
+                        <div className="button"><Link to="/signin">Sign in</Link></div>
+                        <div className="button"><Link to="/signup">Sign up</Link></div>
+                    </div>
+                    : null
+                }
+            { this.props.permission ? <div className="navigation">
+                <div className="button"><Link to="/">Home</Link></div>
+                <div className="button"><Link to="/users">Users</Link></div>     
+                <div className="button"><Link to="/changepassword">Change password</Link></div>   
+                <div className="button" onClick={this.props.signout}>Sign out</div>
+            </div> : null}
         </nav>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    token: state.auth.token
+    token: state.auth.token,
+    permission: state.auth.permission
 });
 
 export default connect(mapStateToProps, authActions)(Header);

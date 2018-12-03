@@ -5,6 +5,7 @@ const config = require('../config');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+
 const getToken = (user) => {
 const timestamp = Date.now();
 
@@ -88,24 +89,33 @@ exports.getUsers = async (req, res, next) => {
 exports.changePassword = async (req, res, next) => {
     try {
         // validation token 
+        let token;
         if(getPasswort(req.body.token)){
             jwtToken.verify(req.body.token, config.secret, (err, authData)=>{
                 if(err){
-                    res.send('You have entered an incorrect password')
+                    res.status(401)
                 } else { 
                     User.findById(authData.sub, async (err, adventure) => {
                         await bcrypt.compare(req.body.password, adventure.password, function(err, valid) {
                             if(valid){
-                                adventure.set({ password: req.body.newPassword });
-                                adventure.save(function (err, complete) {
+                                let email = adventure.email;
+                                let password = req.body.newPassword;
+                                const user = new User({
+                                    email,
+                                    password
                                 });
-                            } 
+                                token = getToken(user);
+                                adventure.set({ password: req.body.newPassword });
+                                adventure.save(function (err, complete) {});
+                                res.json({ token : token, message: "new password" })
+                            }else{
+                                return res.status(422).send({ message: 'not password' })
+                            }
                         });
                     });
-                    res.send('Password successfully changed')
                 };
             })
-        }
+        }  
     } 
     catch(err) {
         next(err);
@@ -134,13 +144,12 @@ exports.recovery = (req, res, next) => {
             docs[0].save(function (err, complete) {});
         })
         nodemailer.createTestAccount((err, account) => {
-            console.log('hello')
             var transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
                 secure: true,
                 auth: {
-                    user: 'rollerdemon2@gmail.com',
+                    user: 'rollerdemon4@gmail.com',
                     pass: 'rollerwar1' 
                 },
                 tls: {
@@ -148,7 +157,7 @@ exports.recovery = (req, res, next) => {
                 }
             });
             let mailOptions = {
-                from: 'rollerdemon2@gmail.com',
+                from: 'rollerdemon4@gmail.com',
                 to: 'andriisvirskyi@gmail.com',
                 subject: "your new password",
                 text: password + '',

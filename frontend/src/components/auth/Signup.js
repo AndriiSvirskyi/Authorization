@@ -8,7 +8,7 @@ import * as authActions from '../../actions/auth';
 class Signup extends PureComponent {
     onSubmit = data => {
         this.props.signup(data, () => {
-            this.props.history.push('/content');
+            this.props.history.push('/home');
         });
     } 
 
