@@ -3,38 +3,40 @@ Example authorization
 
 INSTALLATION
 ------------
+Open the terminal in the project folder and enter
 
-Please make sure the release file is unpacked under a Web-accessible
-directory. You shall see the following files and directories:
-
-      frontend/          framework source files
-      backend/           framework source files
-      README.md               this file
+    $ git clone https://github.com/AndriiSvirskyi/Authorization.git
 
 REQUIREMENTS
 ------------
-
-The minimum requirement by Yii is that your Web server supports
-node -v > v8.12.0 on Windows and Linux operating systems.
+node -v > v8.12.0
 
 QUICK START
 -----------
+Сreate a file config.js :
+```
+module.exports = {
+  secret: your_secret_key;
+};
+```
+in the directory  /backend.
+
+Run your database
+
+    sudo systemctl start mongodb
+    
 
 On command line, type in the following commands:
-
-        $ cd authorization/frontend                (Linux)
+        
+        $ cd authorization/frontend
         $ npm install
         $ npm start
-        cd authorization\frontend                  (Windows)
-        npm install
-        npm start
 
-        $ cd authorization/backend            (Linux)
+open the new terminal and enter
+
+        $ cd authorization/backend
         $ npm install
         $ npm start
-        cd authorization\backend              (Windows)
-        npm install
-        npm start
 
 The project is ready for work
 ------------
