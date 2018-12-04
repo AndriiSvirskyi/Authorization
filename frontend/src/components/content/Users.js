@@ -5,19 +5,20 @@ class Users extends Component {
     constructor(props){
         super(props)
         this.getUsers = ()=>this.props.getUsers(this.props.token)
+        
     }
 
     componentWillMount(){
             this.getUsers()
         }
     renderUser (users) {
-        console.log(this.props.users)
         return users.map((user, index) => {
             return <tr key={index}><td>{`User ${index+1}`}</td><td>{user.email}</td></tr>
         });
     }
 
     render() {
+        console.log(this.props.users)
         return (
             <div className="content">
                 <h2>Users list</h2>

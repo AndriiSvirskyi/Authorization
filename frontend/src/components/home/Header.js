@@ -9,16 +9,17 @@ class Header extends PureComponent {
         this.getPermission = ()=>this.props.getPermission(this.props.token)
 
 
-        /*this.historyPush = () => {
-            window.location.href = "/";
-        }*/
+        this.historyPush = () => {
+           this.props.history.push('/')
+        }
     }
     componentWillMount(){
+        
         this.getPermission()
     }
     
     render() {
-        console.log(this.props);
+
        return (
         <nav>
             <div className="navigation">

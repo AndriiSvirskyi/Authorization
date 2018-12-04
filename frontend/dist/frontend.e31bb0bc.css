@@ -132,6 +132,6 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 .active{
-    background: red;
-
+    background: rgb(87, 28, 223);
+    color: white
 }
