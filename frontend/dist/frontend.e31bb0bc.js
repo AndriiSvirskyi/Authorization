@@ -40174,7 +40174,7 @@ var signin = function signin(data, callback) {
                 _context2.t0 = _context2["catch"](0);
                 dispatch({
                   type: _types.ERROR,
-                  messageSignIn: 'login or password is incorrect'
+                  messageSignIn: 'Incorrect email or password'
                 });
 
               case 13:
@@ -40440,9 +40440,9 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactRedux = require("react-redux");
 
-var _reactRouterDom = require("react-router-dom");
-
 var authActions = _interopRequireWildcard(require("../../actions/auth"));
+
+var _reactRouterDom = require("react-router-dom");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -40479,17 +40479,17 @@ function (_PureComponent) {
     _this.getPermission = function () {
       return _this.props.getPermission(_this.props.token);
     };
+    /*this.historyPush = () => {
+        window.location.href = "/";
+    }*/
 
-    _this.historyPush = function () {
-      window.location.href = "/";
-    };
 
     return _this;
   }
 
   _createClass(Header, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
+    key: "componentWillMount",
+    value: function componentWillMount() {
       this.getPermission();
     }
   }, {
@@ -40497,40 +40497,47 @@ function (_PureComponent) {
     value: function render() {
       var _this2 = this;
 
-      return _react.default.createElement("nav", null, !this.props.permission ? _react.default.createElement("div", {
+      console.log(this.props);
+      return _react.default.createElement("nav", null, _react.default.createElement("div", {
         className: "navigation"
-      }, _react.default.createElement("div", {
+      }, !this.props.permission ? _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
         className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
+      }, _react.default.createElement(_reactRouterDom.NavLink, {
+        activeClassName: "active",
+        exact: true,
         to: "/"
       }, "Home")), _react.default.createElement("div", {
         className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
+      }, _react.default.createElement(_reactRouterDom.NavLink, {
+        activeClassName: "active",
         to: "/signin"
       }, "Sign in")), _react.default.createElement("div", {
         className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
+      }, _react.default.createElement(_reactRouterDom.NavLink, {
+        activeClassName: "active",
         to: "/signup"
-      }, "Sign up"))) : null, this.props.permission ? _react.default.createElement("div", {
-        className: "navigation"
-      }, _react.default.createElement("div", {
+      }, "Sign up"))) : _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
         className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
+      }, _react.default.createElement(_reactRouterDom.NavLink, {
+        activeClassName: "active",
+        exact: true,
         to: "/"
       }, "Home")), _react.default.createElement("div", {
         className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
+      }, _react.default.createElement(_reactRouterDom.NavLink, {
+        activeClassName: "active",
         to: "/users"
       }, "Users")), _react.default.createElement("div", {
         className: "button"
-      }, _react.default.createElement(_reactRouterDom.Link, {
+      }, _react.default.createElement(_reactRouterDom.NavLink, {
+        activeClassName: "active",
         to: "/changepassword"
       }, "Change password")), _react.default.createElement("div", {
         className: "button",
         onClick: function onClick() {
           return _this2.props.signout(_this2.historyPush);
         }
-      }, "Sign out")) : null);
+      }, "Sign out"))));
     }
   }]);
 
@@ -40547,32 +40554,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Header);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/App.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-require("./style.css");
-
-var _Header = _interopRequireDefault(require("./home/Header"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var App = function App(_ref) {
-  var children = _ref.children;
-  return _react.default.createElement("div", null, _react.default.createElement(_Header.default, {
-    history: children.history
-  }), children);
-};
-
-var _default = App;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","./style.css":"src/components/style.css","./home/Header":"src/components/home/Header.js"}],"node_modules/final-form/dist/final-form.es.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js","react-router-dom":"node_modules/react-router-dom/es/index.js"}],"node_modules/final-form/dist/final-form.es.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42765,10 +42747,12 @@ function (_PureComponent) {
             type: "password",
             component: "input",
             autoComplete: "off"
-          }))), _react.default.createElement("button", {
+          }))), _react.default.createElement("div", {
+            className: "button-link"
+          }, _react.default.createElement("button", {
             type: "submit",
             className: "button"
-          }, "Sign Up")));
+          }, "Sign Up"))));
         }
       });
     }
@@ -42891,8 +42875,8 @@ function (_Component) {
           }, "Change password"), _react.default.createElement("div", {
             className: "button"
           }, _react.default.createElement(_reactRouterDom.Link, {
-            to: "/reccovery"
-          }, "Change password")))));
+            to: "/recoverypassword"
+          }, "Recovery password")))));
         }
       });
     }
@@ -43095,11 +43079,9 @@ function (_PureComponent) {
           }, _react.default.createElement("form", {
             className: "form",
             onSubmit: handleSubmit
-          }, _react.default.createElement("h1", null, "Authorization"), _react.default.createElement("div", {
-            className: "message"
-          }, _react.default.createElement("h4", {
-            className: "alert"
-          }, _this2.props.messageSignIn)), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _react.default.createElement("h1", null, "Authorization"), _react.default.createElement("h3", {
+            className: "error"
+          }, _this2.props.messageSignIn), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "email"
           }, "Email"), _react.default.createElement(_reactFinalForm.Field, {
             name: "email",
@@ -43124,7 +43106,7 @@ function (_PureComponent) {
             className: "button"
           }, _react.default.createElement(_reactRouterDom.Link, {
             to: "/recoverypassword"
-          }, "Recovery password")))));
+          }, "Forgot password?")))));
         }
       });
     }
@@ -43189,14 +43171,6 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Users).call(this, props));
 
-    _this.renderUser = function (users) {
-      return users.map(function (user, index) {
-        return _react.default.createElement("li", {
-          key: index
-        }, "email --- ".concat(user.email));
-      });
-    };
-
     _this.getUsers = function () {
       return _this.props.getUsers(_this.props.token);
     };
@@ -43205,18 +43179,26 @@ function (_Component) {
   }
 
   _createClass(Users, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentWillMount",
+    value: function componentWillMount() {
       this.getUsers();
+    }
+  }, {
+    key: "renderUser",
+    value: function renderUser(users) {
+      console.log(this.props.users);
+      return users.map(function (user, index) {
+        return _react.default.createElement("tr", {
+          key: index
+        }, _react.default.createElement("td", null, "User ".concat(index + 1)), _react.default.createElement("td", null, user.email));
+      });
     }
   }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
         className: "content"
-      }, _react.default.createElement("ul", null, this.props.users ? this.renderUser(this.props.users) : _react.default.createElement("div", {
-        className: "alert"
-      }, "you are not authorization")));
+      }, _react.default.createElement("h2", null, "Users list"), _react.default.createElement("table", null, _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "User"), _react.default.createElement("th", null, "Email")), this.props.users ? this.renderUser(this.props.users) : null)));
     }
   }]);
 
@@ -43304,7 +43286,68 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Home);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-redux":"node_modules/react-redux/es/index.js"}],"node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-redux":"node_modules/react-redux/es/index.js"}],"src/components/App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+require("./style.css");
+
+var _Header = _interopRequireDefault(require("./home/Header"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _Signup = _interopRequireDefault(require("./auth/Signup"));
+
+var _changePassword = _interopRequireDefault(require("./auth/changePassword"));
+
+var _recoveryPassword = _interopRequireDefault(require("./auth/recoveryPassword"));
+
+var _Signin = _interopRequireDefault(require("./auth/Signin"));
+
+var _Users = _interopRequireDefault(require("./content/Users"));
+
+var _Home = _interopRequireDefault(require("./home/Home"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App(_ref) {
+  var location = _ref.location,
+      history = _ref.history;
+  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_Header.default, {
+    history: history,
+    location: location
+  }), _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
+    path: "/",
+    exact: true,
+    component: _Home.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/signin",
+    component: _Signin.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/signup",
+    component: _Signup.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/users",
+    component: _Users.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/changepassword",
+    component: _changePassword.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/recoverypassword",
+    component: _recoveryPassword.default
+  })));
+};
+
+var _default = (0, _reactRouterDom.withRouter)(App);
+
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./style.css":"src/components/style.css","./home/Header":"src/components/home/Header.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./auth/Signup":"src/components/auth/Signup.js","./auth/changePassword":"src/components/auth/changePassword.js","./auth/recoveryPassword":"src/components/auth/recoveryPassword.js","./auth/Signin":"src/components/auth/Signin.js","./content/Users":"src/components/content/Users.js","./home/Home":"src/components/home/Home.js"}],"node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43928,26 +43971,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Root = function Root() {
   return _react.default.createElement(_reactRedux.Provider, {
     store: _store.default
-  }, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_App.default, null, _react.default.createElement(_reactRouterDom.Route, {
-    path: "/",
-    exact: true,
-    component: _Home.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/signin",
-    component: _Signin.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/signup",
-    component: _Signup.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/users",
-    component: _Users.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/changepassword",
-    component: _changePassword.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/recoverypassword",
-    component: _recoveryPassword.default
-  }))));
+  }, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_App.default, null)));
 };
 
 var _default = Root;
@@ -43993,7 +44017,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34733" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35217" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

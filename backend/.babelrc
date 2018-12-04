@@ -1,8 +1,7 @@
 {
-    "presets": ["react", "@babel/preset-es2017"],
+    "presets": ["react"],
     "plugins": [
       "transform-object-rest-spread",
-      "transform-class-properties",
       [
         "transform-runtime",
         {

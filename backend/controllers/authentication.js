@@ -93,7 +93,6 @@ exports.changePassword = async (req, res, next) => {
     try {
         // validation token 
         let token;
-        console.log(req.body.password)
         if(getPasswort(req.body.token)){
             jwtToken.verify(req.body.token, config.secret, (err, authData)=>{
                 if(err){

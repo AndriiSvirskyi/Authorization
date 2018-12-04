@@ -33,7 +33,9 @@ class Signup extends PureComponent {
                             <Field name="password" type="password" component="input" autoComplete="off"/>
                         </label>
                     </div>
-                    <button type="submit" className="button">Sign Up</button>
+                    <div className="button-link">
+                        <button type="submit" className="button">Sign Up</button>
+                    </div>
                 </form>
             </div>
             )}

@@ -6,20 +6,31 @@ class Users extends Component {
         super(props)
         this.getUsers = ()=>this.props.getUsers(this.props.token)
     }
-    componentDidMount() {
-        this.getUsers();
-    }
-    renderUser = (users) =>{
+
+    componentWillMount(){
+            this.getUsers()
+        }
+    renderUser (users) {
+        console.log(this.props.users)
         return users.map((user, index) => {
-            return <li key={index}>{`email --- ${user.email}`}</li>
+            return <tr key={index}><td>{`User ${index+1}`}</td><td>{user.email}</td></tr>
         });
     }
+
     render() {
         return (
             <div className="content">
-                <ul>
-                    {this.props.users ? this.renderUser(this.props.users) : <div className="alert">you are not authorization</div>}
-                </ul>
+                <h2>Users list</h2>
+
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                    </tr>
+                    {this.props.users ? this.renderUser(this.props.users) : null}
+                    </tbody>
+                </table>
             </div>
         );
     }

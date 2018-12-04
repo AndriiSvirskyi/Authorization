@@ -38,7 +38,7 @@ class ChangePassword extends Component {
                             </div>
                             <div className="button-link">
                                 <button type="submit" className="button">Change password</button>
-                                <div className="button"><Link to="/reccovery">Change password</Link></div>
+                                <div className="button"><Link to="/recoverypassword">Recovery password</Link></div>
                             </div>
                         </form>
                     </div>

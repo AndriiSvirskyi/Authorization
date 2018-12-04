@@ -40,7 +40,7 @@ export const signin = (data, callback) => async dispatch => {
     } catch (err) {
         dispatch({
             type: ERROR,
-            messageSignIn: 'login or password is incorrect'
+            messageSignIn: 'Incorrect email or password'
         });
     }
 };

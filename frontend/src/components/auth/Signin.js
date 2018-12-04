@@ -20,9 +20,7 @@ class Signin extends PureComponent {
                         <form className="form" onSubmit={handleSubmit}>
 
                         <h1>Authorization</h1>
-                        <div className="message">
-                            <h4 className="alert">{this.props.messageSignIn}</h4>
-                        </div>
+                            <h3 className="error">{this.props.messageSignIn}</h3>
                             <div>
                                 <label>
                                     <div className="email">Email</div>
@@ -37,7 +35,7 @@ class Signin extends PureComponent {
                             </div>
                             <div className="button-link">
                                 <button type="submit" className="button">Sign In</button>
-                                <div className="button"><Link to="/recoverypassword">Recovery password</Link></div>
+                                <div className="button"><Link to="/recoverypassword">Forgot password?</Link></div>
                             </div>
                         </form>
                     </div>
