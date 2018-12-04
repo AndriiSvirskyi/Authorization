@@ -13,7 +13,8 @@ class Header extends PureComponent {
             window.location.href = "/";
         }
     }
-    componentDidMount(){
+
+    componentDidUpdate(){
         this.getPermission()
     }
     

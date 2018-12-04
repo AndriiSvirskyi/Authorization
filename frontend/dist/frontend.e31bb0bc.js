@@ -40488,8 +40488,8 @@ function (_PureComponent) {
   }
 
   _createClass(Header, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
       this.getPermission();
     }
   }, {
@@ -43993,7 +43993,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38933" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34733" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
