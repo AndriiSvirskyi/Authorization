@@ -76,20 +76,42 @@ nav a:last-child {
 }
 
 .alert{
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     color: rgb(204, 27, 27);
+    max-width: 300px;
+
 }
 .success{
     font-size: 24px;
     text-align: center;
     color: rgb(79, 192, 103);
 }
-
+.message {
+    min-width: 300px;
+    min-height: 42px;
+}
+.error{
+    min-height: 60px;
+    min-width: 300px;
+    font-size: 16px;
+    text-align: center;
+    color: rgb(204, 27, 27);
+    max-width: 300px;
+}
+h4{
+    margin: 0;
+}
 .home{
     font-size: 30px;
 
 }
+h1{
+    text-align: center;
+}
 .b-text{
     font-size: 30px;
+}
+li{
+    list-style-type: none;
 }

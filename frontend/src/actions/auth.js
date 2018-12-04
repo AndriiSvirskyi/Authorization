@@ -31,7 +31,8 @@ export const signin = (data, callback) => async dispatch => {
         const { token } = response.data;
         dispatch({
             type: AUTH,
-            token
+            token,
+            permission: true,
         });
         localStorage.setItem('token', token);
 
@@ -44,8 +45,9 @@ export const signin = (data, callback) => async dispatch => {
     }
 };
 
-export const signout = (history) => {
+export const signout = (callback) => {
     localStorage.removeItem('token');
+    callback()
     return {
         type: AUTH,
         token: ''
@@ -94,7 +96,6 @@ export const changePassword = (data) => async dispatch => {
     try { 
         const res = await axios.post(`${url}/changepassword`, data);
         localStorage.setItem('token', res.data.token);
-        console.log(res.data)
         dispatch({
             type: CHANGE,
             message: res.data.message,
@@ -104,7 +105,8 @@ export const changePassword = (data) => async dispatch => {
     } catch (err) {
         dispatch({
             type: ERROR,
-            messageChangePassword: "You have entered an incorrect password"
+            message: "Wrong password",
+            permission: true
         });
     }
 };

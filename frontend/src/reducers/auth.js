@@ -16,13 +16,15 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
         token: action.token,
+        permission: action.permission
       };
     case ERROR:
       return {
         token: state.token,
         messageSignIn : action.messageSignIn,
         messageSignUp : action.messageSignUp,
-        messageChangePassword: action.messageChangePassword
+        message: action.message,
+        permission: action.permission
       };
     case USERS:
       return {

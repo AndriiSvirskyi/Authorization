@@ -18,8 +18,12 @@ class ChangePassword extends Component {
                 render={({ handleSubmit }) => (
                     <div className="form-wrap">
                         <form className="form" onSubmit={handleSubmit}>
-                        <h1>Change password</h1>
-                        <h4 className="alert">{this.props.messageChangePassword || this.props.message}</h4>
+                            <h1>Change password</h1>
+                            <div className="message">
+                                <h4 className="alert">{this.props.message}</h4>
+                                <h4 className="success">{this.props.messageChangePassword}</h4>
+                            </div>
+                            
                             <div>
                                 <label>
                                     <div className="password">Current password</div>
@@ -33,8 +37,8 @@ class ChangePassword extends Component {
                                 </label>
                             </div>
                             <div className="button-link">
-                            <button type="submit" className="button">Change password</button>
-                            <div className="button"><Link to="/reccovery">Change password</Link></div>
+                                <button type="submit" className="button">Change password</button>
+                                <div className="button"><Link to="/reccovery">Change password</Link></div>
                             </div>
                         </form>
                     </div>

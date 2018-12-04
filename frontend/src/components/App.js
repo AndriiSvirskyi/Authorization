@@ -4,7 +4,7 @@ import Header from './home/Header'
 
 const App = ({ children }) => (
   <div>
-    <Header/>
+    <Header history = {children.history}/>
     { children }
   </div>
 );

@@ -8,9 +8,9 @@ import * as authActions from '../../actions/auth';
 class Signup extends PureComponent {
     onSubmit = data => {
         this.props.signup(data, () => {
-            this.props.history.push('/home');
+            this.props.history.push('/');
         });
-    } 
+    }
 
     render() {
         return (
@@ -19,18 +19,18 @@ class Signup extends PureComponent {
             render={({ handleSubmit }) => (
             <div className="form-wrap">
                 <form className="form" onSubmit={handleSubmit}>
-                    <h3 className="alert">{this.props.messageSignUp}</h3>
                 <h1>Registration</h1>
+                <h3 className="error">{this.props.messageSignUp}</h3>
                     <div>
-                    <label>
-                        <div className="email">Email</div>
-                        <Field name="email" type="email" component="input" autoComplete="off" required/>
-                    </label>
+                        <label>
+                            <div className="email">Email</div>
+                            <Field name="email" type="email" component="input" autoComplete="off" required/>
+                        </label>
                     </div>
                     <div>
                         <label>
                             <div className="password">Password</div>
-                            <Field name="password" type="password" component="input" autoComplete="off" required/>
+                            <Field name="password" type="password" component="input" autoComplete="off"/>
                         </label>
                     </div>
                     <button type="submit" className="button">Sign Up</button>

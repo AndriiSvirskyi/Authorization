@@ -45,6 +45,9 @@ exports.signup = async (req, res, next) => {
         if (!email || !password) {
         return res.status(422).send({ message: 'You must provide email and password' });
         }
+        if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)){
+            return res.status(422).send({ message: 'The password must contain a minimum of 6 characters, including 1 character, 1 uppercase letter' });
+        }
 
         const existingUser = await User.findOne({ email });
 
@@ -90,12 +93,14 @@ exports.changePassword = async (req, res, next) => {
     try {
         // validation token 
         let token;
+        console.log(req.body.password)
         if(getPasswort(req.body.token)){
             jwtToken.verify(req.body.token, config.secret, (err, authData)=>{
                 if(err){
                     res.status(401)
                 } else { 
                     User.findById(authData.sub, async (err, adventure) => {
+                        console.log(adventure)
                         await bcrypt.compare(req.body.password, adventure.password, function(err, valid) {
                             if(valid){
                                 let email = adventure.email;
@@ -107,7 +112,7 @@ exports.changePassword = async (req, res, next) => {
                                 token = getToken(user);
                                 adventure.set({ password: req.body.newPassword });
                                 adventure.save(function (err, complete) {});
-                                res.json({ token : token, message: "new password" })
+                                res.json({ token : token, message: "Your password has changed" })
                             }else{
                                 return res.status(422).send({ message: 'not password' })
                             }

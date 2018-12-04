@@ -11,8 +11,7 @@ class Users extends Component {
     }
     renderUser = (users) =>{
         return users.map((user, index) => {
-            return <li key={index}>{`email --- ${user.email} 
-            password --- ${user.password}`}</li>
+            return <li key={index}>{`email --- ${user.email}`}</li>
         });
     }
     render() {

@@ -40161,7 +40161,8 @@ var signin = function signin(data, callback) {
                 token = response.data.token;
                 dispatch({
                   type: _types.AUTH,
-                  token: token
+                  token: token,
+                  permission: true
                 });
                 localStorage.setItem('token', token);
                 callback();
@@ -40193,8 +40194,9 @@ var signin = function signin(data, callback) {
 
 exports.signin = signin;
 
-var signout = function signout(history) {
+var signout = function signout(callback) {
   localStorage.removeItem('token');
+  callback();
   return {
     type: _types.AUTH,
     token: ''
@@ -40342,30 +40344,30 @@ var changePassword = function changePassword(data) {
               case 3:
                 res = _context5.sent;
                 localStorage.setItem('token', res.data.token);
-                console.log(res.data);
                 dispatch({
                   type: _types.CHANGE,
                   message: res.data.message,
                   token: res.data.token,
                   permission: true
                 });
-                _context5.next = 12;
+                _context5.next = 11;
                 break;
 
-              case 9:
-                _context5.prev = 9;
+              case 8:
+                _context5.prev = 8;
                 _context5.t0 = _context5["catch"](0);
                 dispatch({
                   type: _types.ERROR,
-                  messageChangePassword: "You have entered an incorrect password"
+                  message: "Wrong password",
+                  permission: true
                 });
 
-              case 12:
+              case 11:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, this, [[0, 9]]);
+        }, _callee5, this, [[0, 8]]);
       }));
 
       return function (_x5) {
@@ -40478,6 +40480,10 @@ function (_PureComponent) {
       return _this.props.getPermission(_this.props.token);
     };
 
+    _this.historyPush = function () {
+      window.location.href = "/";
+    };
+
     return _this;
   }
 
@@ -40489,6 +40495,8 @@ function (_PureComponent) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return _react.default.createElement("nav", null, !this.props.permission ? _react.default.createElement("div", {
         className: "navigation"
       }, _react.default.createElement("div", {
@@ -40519,7 +40527,9 @@ function (_PureComponent) {
         to: "/changepassword"
       }, "Change password")), _react.default.createElement("div", {
         className: "button",
-        onClick: this.props.signout
+        onClick: function onClick() {
+          return _this2.props.signout(_this2.historyPush);
+        }
       }, "Sign out")) : null);
     }
   }]);
@@ -40555,7 +40565,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var App = function App(_ref) {
   var children = _ref.children;
-  return _react.default.createElement("div", null, _react.default.createElement(_Header.default, null), children);
+  return _react.default.createElement("div", null, _react.default.createElement(_Header.default, {
+    history: children.history
+  }), children);
 };
 
 var _default = App;
@@ -42717,7 +42729,7 @@ function (_PureComponent) {
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Signup)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.onSubmit = function (data) {
       _this.props.signup(data, function () {
-        _this.props.history.push('/home');
+        _this.props.history.push('/');
       });
     }, _temp));
   }
@@ -42736,9 +42748,9 @@ function (_PureComponent) {
           }, _react.default.createElement("form", {
             className: "form",
             onSubmit: handleSubmit
-          }, _react.default.createElement("h3", {
-            className: "alert"
-          }, _this2.props.messageSignUp), _react.default.createElement("h1", null, "Registration"), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _react.default.createElement("h1", null, "Registration"), _react.default.createElement("h3", {
+            className: "error"
+          }, _this2.props.messageSignUp), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "email"
           }, "Email"), _react.default.createElement(_reactFinalForm.Field, {
             name: "email",
@@ -42752,8 +42764,7 @@ function (_PureComponent) {
             name: "password",
             type: "password",
             component: "input",
-            autoComplete: "off",
-            required: true
+            autoComplete: "off"
           }))), _react.default.createElement("button", {
             type: "submit",
             className: "button"
@@ -42852,9 +42863,13 @@ function (_Component) {
           }, _react.default.createElement("form", {
             className: "form",
             onSubmit: handleSubmit
-          }, _react.default.createElement("h1", null, "Change password"), _react.default.createElement("h4", {
+          }, _react.default.createElement("h1", null, "Change password"), _react.default.createElement("div", {
+            className: "message"
+          }, _react.default.createElement("h4", {
             className: "alert"
-          }, _this2.props.messageChangePassword || _this2.props.message), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _this2.props.message), _react.default.createElement("h4", {
+            className: "success"
+          }, _this2.props.messageChangePassword)), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "password"
           }, "Current password"), _react.default.createElement(_reactFinalForm.Field, {
             name: "password",
@@ -43080,9 +43095,11 @@ function (_PureComponent) {
           }, _react.default.createElement("form", {
             className: "form",
             onSubmit: handleSubmit
-          }, _react.default.createElement("h1", null, "Authorization"), _react.default.createElement("h4", {
+          }, _react.default.createElement("h1", null, "Authorization"), _react.default.createElement("div", {
+            className: "message"
+          }, _react.default.createElement("h4", {
             className: "alert"
-          }, _this2.props.messageSignIn), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
+          }, _this2.props.messageSignIn)), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "email"
           }, "Email"), _react.default.createElement(_reactFinalForm.Field, {
             name: "email",
@@ -43176,7 +43193,7 @@ function (_Component) {
       return users.map(function (user, index) {
         return _react.default.createElement("li", {
           key: index
-        }, "email --- ".concat(user.email, " \n            password --- ").concat(user.password));
+        }, "email --- ".concat(user.email));
       });
     };
 
@@ -43218,70 +43235,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Users);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-redux":"node_modules/react-redux/es/index.js"}],"src/components/Signout.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _reactRedux = require("react-redux");
-
-var authActions = _interopRequireWildcard(require("../actions/auth"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var Signout =
-/*#__PURE__*/
-function (_PureComponent) {
-  _inherits(Signout, _PureComponent);
-
-  function Signout() {
-    _classCallCheck(this, Signout);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Signout).apply(this, arguments));
-  }
-
-  _createClass(Signout, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.props.signout();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("h3", null, "see you");
-    }
-  }]);
-
-  return Signout;
-}(_react.PureComponent);
-
-var _default = (0, _reactRedux.connect)(null, authActions)(Signout);
-
-exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../actions/auth":"src/actions/auth.js"}],"src/components/home/Home.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../../actions/auth":"src/actions/auth.js","react-redux":"node_modules/react-redux/es/index.js"}],"src/components/home/Home.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43850,7 +43804,8 @@ var _default = function _default() {
   switch (action.type) {
     case _types.AUTH:
       return (0, _extends2.default)({}, INITIAL_STATE, {
-        token: action.token
+        token: action.token,
+        permission: action.permission
       });
 
     case _types.ERROR:
@@ -43858,7 +43813,8 @@ var _default = function _default() {
         token: state.token,
         messageSignIn: action.messageSignIn,
         messageSignUp: action.messageSignUp,
-        messageChangePassword: action.messageChangePassword
+        message: action.message,
+        permission: action.permission
       };
 
     case _types.USERS:
@@ -43963,8 +43919,6 @@ var _Signin = _interopRequireDefault(require("./auth/Signin"));
 
 var _Users = _interopRequireDefault(require("./content/Users"));
 
-var _Signout = _interopRequireDefault(require("./Signout"));
-
 var _Home = _interopRequireDefault(require("./home/Home"));
 
 var _store = _interopRequireDefault(require("../store"));
@@ -43988,9 +43942,6 @@ var Root = function Root() {
     path: "/users",
     component: _Users.default
   }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/signout",
-    component: _Signout.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
     path: "/changepassword",
     component: _changePassword.default
   }), _react.default.createElement(_reactRouterDom.Route, {
@@ -44001,7 +43952,7 @@ var Root = function Root() {
 
 var _default = Root;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./App":"src/components/App.js","./auth/Signup":"src/components/auth/Signup.js","./auth/changePassword":"src/components/auth/changePassword.js","./auth/recoveryPassword":"src/components/auth/recoveryPassword.js","./auth/Signin":"src/components/auth/Signin.js","./content/Users":"src/components/content/Users.js","./Signout":"src/components/Signout.js","./home/Home":"src/components/home/Home.js","../store":"src/store.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","./App":"src/components/App.js","./auth/Signup":"src/components/auth/Signup.js","./auth/changePassword":"src/components/auth/changePassword.js","./auth/recoveryPassword":"src/components/auth/recoveryPassword.js","./auth/Signin":"src/components/auth/Signin.js","./content/Users":"src/components/content/Users.js","./home/Home":"src/components/home/Home.js","../store":"src/store.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -44042,7 +43993,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36943" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38933" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
