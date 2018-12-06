@@ -10,36 +10,35 @@ class Header extends PureComponent {
 
 
         this.historyPush = () => {
-           this.props.history.push('/')
+            this.props.history.push('/')
         }
     }
     componentWillMount(){
-        
         this.getPermission()
     }
     
     render() {
 
-       return (
-        <nav>
-            <div className="navigation">
-                {!this.props.permission ?
-                    <React.Fragment>
-                        <div className="button"><NavLink activeClassName="active" exact to="/">Home</NavLink></div>
-                        <div className="button"><NavLink activeClassName="active" to="/signin">Sign in</NavLink></div>
-                        <div className="button"><NavLink activeClassName="active" to="/signup">Sign up</NavLink></div>
-                    </React.Fragment>
-                    : (
+        return (
+            <nav>
+                <div className="navigation">
+                    {!this.props.permission ?
                         <React.Fragment>
                             <div className="button"><NavLink activeClassName="active" exact to="/">Home</NavLink></div>
-                            <div className="button"><NavLink activeClassName="active" to="/users">Users</NavLink></div>
-                            <div className="button"><NavLink activeClassName="active" to="/changepassword">Change password</NavLink></div>
-                            <div className="button" onClick={()=>this.props.signout(this.historyPush)}>Sign out</div>
+                            <div className="button"><NavLink activeClassName="active" to="/signin">Sign in</NavLink></div>
+                            <div className="button"><NavLink activeClassName="active" to="/signup">Sign up</NavLink></div>
                         </React.Fragment>
-                    )
-                }
-            </div>
-        </nav>
+                        : (
+                            <React.Fragment>
+                                <div className="button"><NavLink activeClassName="active" exact to="/">Home</NavLink></div>
+                                <div className="button"><NavLink activeClassName="active" to="/users">Users</NavLink></div>
+                                <div className="button"><NavLink activeClassName="active" to="/changepassword">Change password</NavLink></div>
+                                <div className="button" onClick={()=>this.props.signout(this.historyPush)}>Sign out</div>
+                            </React.Fragment>
+                        )
+                    }
+                </div>
+            </nav>
         );
     }
 }

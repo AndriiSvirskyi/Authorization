@@ -135,3 +135,17 @@ tr:nth-child(even) {
     background: rgb(87, 28, 223);
     color: white
 }
+.passwordCheck{
+    background-image: url('./kisspng-computer-icons-eye-icon-vector-eye-side-5ab0baf8d412f5.6598771615215316408687.jpg');
+    background-position: center;
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.inputBox{
+    max-width: 100%;
+}
+.input-wrap{
+    display: flex;
+}

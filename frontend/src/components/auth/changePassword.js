@@ -5,12 +5,28 @@ import * as authActions from '../../actions/auth';
 import { Link } from 'react-router-dom';
 
 class ChangePassword extends Component {
-
+constructor(props){
+    super(props)
+    this.state = {
+        inputCurrentType: 'password',
+        inputNewType: 'password'
+    }
+    this.inputCurrentType = this.inputCurrentType.bind(this);
+    this.inputNewType = this.inputNewType.bind(this);
+}
     onSubmit = data => {
         data.token = this.props.token;
         this.props.changePassword(data, () => {
         });
     }
+    inputCurrentType() {
+        this.state.inputCurrentType === "password" ? this.setState({ inputCurrentType: "text" }) : this.setState({inputCurrentType: "password"})   
+    }
+
+    inputNewType() {
+        this.state.inputNewType === "password" ? this.setState({ inputNewType: "text" }) : this.setState({inputNewType: "password"})   
+    }
+
     render() {
         return (
             <Form
@@ -27,13 +43,19 @@ class ChangePassword extends Component {
                             <div>
                                 <label>
                                     <div className="password">Current password</div>
-                                    <Field name="password" type="text" component="input" autoComplete="on" />
+                                    <div className="input-wrap">
+                                        <Field name="password" className="inputBox" type={this.state.inputCurrentType} component="input" autoComplete="on" />
+                                        <div className="passwordCheck" onClick={this.inputCurrentType}></div>
+                                    </div>
                                 </label>
                             </div>
                             <div>
                                 <label>
                                     <div className="password">New password</div>
-                                    <Field name="newPassword" type="text" component="input" autoComplete="on"/>
+                                    <div className="input-wrap">
+                                        <Field name="newPassword" className="inputBox" type={this.state.inputNewType} component="input" autoComplete="on"/>
+                                        <div className="passwordCheck" onClick={this.inputNewType}></div>   
+                                    </div>
                                 </label>
                             </div>
                             <div className="button-link">
