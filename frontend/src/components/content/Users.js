@@ -13,7 +13,7 @@ class Users extends Component {
         }
     renderUser (users) {
         return users.map((user, index) => {
-            return <tr key={index}><td>{`User ${index+1}`}</td><td>{user.email}</td></tr>
+            return <tr key={index}><td>{user.email}</td><td>{user.name}</td><td>{user.birthday}</td><td>{user.status}</td></tr>
         });
     }
 
@@ -26,8 +26,10 @@ class Users extends Component {
                 <table>
                     <tbody>
                     <tr>
-                        <th>User</th>
                         <th>Email</th>
+                        <th>Name</th>
+                        <th>Birthday</th>
+                        <th>Status</th>
                     </tr>
                     {this.props.users ? this.renderUser(this.props.users) : null}
                     </tbody>

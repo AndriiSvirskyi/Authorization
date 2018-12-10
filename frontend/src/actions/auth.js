@@ -111,6 +111,23 @@ export const changePassword = (data) => async dispatch => {
     }
 };
 
+export const addInformation = (data) => async dispatch => {
+    try { 
+        const res = await axios.post(`${url}/addInformation`, data);
+        dispatch({
+            type: CHANGE,
+            messageAddInfo: res.data.message,
+            permission: true
+        });
+    } catch (err) {
+        dispatch({
+            type: ERROR,
+            message: "Information did`not added",
+            permission: true
+        });
+    }
+};
+
 export const recovery = (data) => async dispatch => {
     try { 
         const res = await axios.post(`${url}/recovery`, data);

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   messageSignIn : '',
   messageSignUp : '',
   messageChangePassword : '',
+  messageAddInfo: '',
   users: '',
   permission: '',
 };
@@ -36,7 +37,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         messageChangePassword: action.message,
         token: state.token,
-        permission: action.permission
+        permission: action.permission,
+        messageAddInfo: action.messageAddInfo
     }
     case PERMISSION:
       return {

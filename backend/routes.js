@@ -12,5 +12,6 @@ routes.get('/users', Authentication.getUsers);
 routes.post('/changepassword', Authentication.changePassword);
 routes.get('/permission', Authentication.permission);
 routes.post('/recovery', Authentication.recovery);
+routes.post('/addInformation', Authentication.addInformation);
 
 module.exports = routes;

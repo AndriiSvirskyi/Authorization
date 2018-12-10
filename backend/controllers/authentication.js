@@ -42,6 +42,7 @@ exports.signin = (req, res, next) => {
 exports.signup = async (req, res, next) => {
     try {
         const { email, password } = req.body;
+        const status = 'user'
         if (!email || !password) {
         return res.status(422).send({ message: 'You must provide email and password' });
         }
@@ -54,8 +55,8 @@ exports.signup = async (req, res, next) => {
         if (existingUser) {
         return res.status(422).send({ message: 'Email is in use' });
         }
-
         const user = new User({
+            status,
             email,
             password
         });
@@ -76,8 +77,10 @@ exports.getUsers = async (req, res, next) => {
         const usersMongo = await User.find({});
         usersMongo.forEach((user)=>{
             let email = user.email;
-            let password = user.password
-            users.push({email : email, password : password})
+            let name = user.name;
+            let birthday = user.birthday;
+            let status = user.status
+            users.push({email : email, name : name, birthday : birthday, status : status})
         });
 
         // validation token 
@@ -99,7 +102,6 @@ exports.changePassword = async (req, res, next) => {
                     res.status(401)
                 } else { 
                     User.findById(authData.sub, async (err, adventure) => {
-                        console.log(adventure)
                         await bcrypt.compare(req.body.password, adventure.password, function(err, valid) {
                             if(valid){
                                 let email = adventure.email;
@@ -125,6 +127,32 @@ exports.changePassword = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.addInformation = async (req, res, next) => {
+
+    try {
+        // validation token 
+
+        let token;
+        if(getPasswort(req.body.token)){
+            jwtToken.verify(req.body.token, config.secret, (err, authData)=>{
+                if(err){
+                    res.status(401)
+                } else {
+                    let status = "User";
+                        if(req.body.name === "admin"){ status = "admin" };
+                    User.findByIdAndUpdate({ _id : authData.sub }, { $set: { name: req.body.name, birthday : req.body.birthday, status: status }}, { new: true }, function (err, tank) {
+
+                    });
+                };
+            });
+        }
+        res.send({ message : "Information added" })
+    }
+    catch(err) {
+        next(err);
+    }
+}
 
 exports.permission = (req, res, next) => {
     try {

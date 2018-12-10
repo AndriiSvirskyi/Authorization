@@ -6,8 +6,9 @@ import Signup from './auth/Signup';
 import ChangePassword from './auth/changePassword';
 import RecoveryPassword from './auth/recoveryPassword';
 import Signin from './auth/Signin';
-import Users from './content/Users';
 import Home from './home/Home';
+import Settings from './content/Settings';
+import Users from './content/Users';
 
 const App = ({ location, history }) => {
   return (
@@ -18,6 +19,7 @@ const App = ({ location, history }) => {
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
           <Route path="/users" component={Users} />
+          <Route path="/settings" component={Settings} />
           <Route path="/changepassword" component={ChangePassword} />
           <Route path="/recoverypassword" component={RecoveryPassword} />
       </Switch>

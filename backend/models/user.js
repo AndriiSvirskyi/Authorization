@@ -11,17 +11,20 @@
             unique: true,
             lowercase: true
         },
-        password: String
+        password: String,
+        name: String,
+        status: String,
+        birthday: String
     });
 
     // encrypt password
     userSchema.pre('save', async function(next) {
         try {
-            const user = this;
-            const salt = await bcrypt.genSalt(12);
-            const hash = await bcrypt.hash(user.password, salt);
-            user.password = hash;
-            next();
+                const user = this;
+                const salt = await bcrypt.genSalt(12);
+                const hash = await bcrypt.hash(user.password, salt);
+                user.password = hash;
+                next();
         } catch(err) {
             next(err);
         }

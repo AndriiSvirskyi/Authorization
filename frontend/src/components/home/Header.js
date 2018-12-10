@@ -34,6 +34,7 @@ class Header extends PureComponent {
                                 <div className="button"><NavLink activeClassName="active" to="/users">Users</NavLink></div>
                                 <div className="button"><NavLink activeClassName="active" to="/changepassword">Change password</NavLink></div>
                                 <div className="button" onClick={()=>this.props.signout(this.historyPush)}>Sign out</div>
+                                <div className="button"><NavLink activeClassName="active" to="/settings">Settings</NavLink></div>
                             </React.Fragment>
                         )
                     }
