@@ -40107,7 +40107,8 @@ var signup = function signup(data, callback) {
                 token = response.data.token;
                 dispatch({
                   type: _types.AUTH,
-                  token: token
+                  token: token,
+                  permission: true
                 });
                 localStorage.setItem('token', token);
                 callback();
@@ -40579,11 +40580,6 @@ function (_PureComponent) {
         activeClassName: "active",
         to: "/users"
       }, "Users")), _react.default.createElement("div", {
-        className: "button"
-      }, _react.default.createElement(_reactRouterDom.NavLink, {
-        activeClassName: "active",
-        to: "/changepassword"
-      }, "Change password")), _react.default.createElement("div", {
         className: "button",
         onClick: function onClick() {
           return _this2.props.signout(_this2.historyPush);
@@ -42723,8 +42719,6 @@ var _reactFinalForm = require("react-final-form");
 
 var _reactRedux = require("react-redux");
 
-var _reactRouterDom = require("react-router-dom");
-
 var authActions = _interopRequireWildcard(require("../../actions/auth"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -42768,6 +42762,8 @@ function (_PureComponent) {
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Signup)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.onSubmit = function (data) {
       _this.props.signup(data, function () {
         _this.props.history.push('/');
+
+        authActions.getPermission();
       });
     }, _temp));
   }
@@ -42826,7 +42822,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var _default = (0, _reactRedux.connect)(mapStateToProps, authActions)(Signup);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/auth/changePassword.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-final-form":"node_modules/react-final-form/dist/react-final-form.es.js","react-redux":"node_modules/react-redux/es/index.js","../../actions/auth":"src/actions/auth.js"}],"src/components/auth/changePassword.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43337,9 +43333,16 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Settings).call(this, props));
 
     _this.onSubmit = function (data) {
-      data.token = _this.props.token;
+      var birthday = _this.textInput.current.state.state.values.birthday;
 
-      _this.props.addInformation(data);
+      if (!birthday || /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/.test(birthday) && birthday.split('.')[2] <= new Date().getFullYear()) {
+        data.token = _this.props.token;
+        _this.alert = '';
+
+        _this.props.addInformation(data);
+      } else {
+        _this.alert = 'incorrect date';
+      }
     };
 
     _this.addInformation = function () {
@@ -43366,6 +43369,8 @@ function (_Component) {
       });
     };
 
+    _this.textInput = _react.default.createRef();
+    _this.alert = '';
     _this.state = {
       changePassword: false,
       addInformation: false
@@ -43387,6 +43392,7 @@ function (_Component) {
         className: "button",
         onClick: this.changePassword
       }, "ChangePassword")), this.state.changePassword ? _react.default.createElement(_changePassword.default, null) : null, this.state.addInformation ? _react.default.createElement(_reactFinalForm.Form, {
+        ref: this.textInput,
         onSubmit: this.onSubmit,
         render: function render(_ref) {
           var handleSubmit = _ref.handleSubmit;
@@ -43399,7 +43405,7 @@ function (_Component) {
             className: "message"
           }, _react.default.createElement("h4", {
             className: "alert"
-          }, _this2.props.message), _react.default.createElement("h4", {
+          }, _this2.props.message || _this2.alert), _react.default.createElement("h4", {
             className: "success"
           }, _this2.props.messageAddInfo)), _react.default.createElement("div", null, _react.default.createElement("label", null, _react.default.createElement("div", {
             className: "password"
@@ -43413,9 +43419,11 @@ function (_Component) {
           }, "Birthday"), _react.default.createElement(_reactFinalForm.Field, {
             name: "birthday",
             className: "inputBox",
+            ref: true,
             type: "text",
             component: "input",
-            autoComplete: "on"
+            autoComplete: "on",
+            placeholder: "18.09.1995"
           }))), _react.default.createElement("div", {
             className: "button-link"
           }, _react.default.createElement("button", {
@@ -43512,7 +43520,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.props.users);
       return _react.default.createElement("div", {
         className: "content"
       }, _react.default.createElement("h2", null, "Users list"), _react.default.createElement("table", null, _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Email"), _react.default.createElement("th", null, "Name"), _react.default.createElement("th", null, "Birthday"), _react.default.createElement("th", null, "Status")), this.props.users ? this.renderUser(this.props.users) : null)));
@@ -44260,7 +44267,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33359" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33489" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

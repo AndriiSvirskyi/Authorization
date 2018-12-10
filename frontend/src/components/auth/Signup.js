@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import * as authActions from '../../actions/auth';
 
 
@@ -9,6 +8,7 @@ class Signup extends PureComponent {
     onSubmit = data => {
         this.props.signup(data, () => {
             this.props.history.push('/');
+            authActions.getPermission();
         });
     }
 

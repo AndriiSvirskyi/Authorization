@@ -18,7 +18,6 @@ class Users extends Component {
     }
 
     render() {
-        console.log(this.props.users)
         return (
             <div className="content">
                 <h2>Users list</h2>

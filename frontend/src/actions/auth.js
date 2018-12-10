@@ -10,7 +10,8 @@ export const signup = (data, callback) => async dispatch => {
 
         dispatch({
             type: AUTH,
-            token
+            token,
+            permission: true
         });
         localStorage.setItem('token', token);
 

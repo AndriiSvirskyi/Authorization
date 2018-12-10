@@ -42,7 +42,7 @@ exports.signin = (req, res, next) => {
 exports.signup = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const status = 'user'
+        const status = 'User'
         if (!email || !password) {
         return res.status(422).send({ message: 'You must provide email and password' });
         }
@@ -74,13 +74,26 @@ exports.getUsers = async (req, res, next) => {
     try {
         let token = req.headers.authorization.split(' ')[1]
         let users = [];
+        let currentDate = new Date();
         const usersMongo = await User.find({});
         usersMongo.forEach((user)=>{
             let email = user.email;
             let name = user.name;
+            let years;
             let birthday = user.birthday;
+            if(birthday){
+                birthday = user.birthday.split('.');
+                years = currentDate.getFullYear() - birthday[2];
+                if(currentDate.getMonth < birthday[1]){
+                    ++years
+                }else if(currentDate.getMonth == birthday[1]){
+                    if(currentDate.getDate() >= birthday[0]){
+                    ++years
+                    }
+                }
+            }
             let status = user.status
-            users.push({email : email, name : name, birthday : birthday, status : status})
+            users.push({email : email, name : name, birthday : years, status : status})
         });
 
         // validation token 
@@ -132,8 +145,6 @@ exports.addInformation = async (req, res, next) => {
 
     try {
         // validation token 
-
-        let token;
         if(getPasswort(req.body.token)){
             jwtToken.verify(req.body.token, config.secret, (err, authData)=>{
                 if(err){
@@ -141,9 +152,9 @@ exports.addInformation = async (req, res, next) => {
                 } else {
                     let status = "User";
                         if(req.body.name === "admin"){ status = "admin" };
-                    User.findByIdAndUpdate({ _id : authData.sub }, { $set: { name: req.body.name, birthday : req.body.birthday, status: status }}, { new: true }, function (err, tank) {
-
-                    });
+                    if(req.body.name && req.body.birthday) User.findByIdAndUpdate({ _id : authData.sub }, { $set: { name: req.body.name, birthday : req.body.birthday, status: status }}, { new: true }, function (err, tank) {})
+                    if(req.body.name) User.findByIdAndUpdate({ _id : authData.sub }, { $set: { name: req.body.name, status: status }}, { new: true }, function (err, tank) {})
+                    if(req.body.birthday) User.findByIdAndUpdate({ _id : authData.sub }, { $set: { birthday : req.body.birthday, status: status }}, { new: true }, function (err, tank) {})
                 };
             });
         }

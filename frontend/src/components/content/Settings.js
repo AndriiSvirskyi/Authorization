@@ -8,6 +8,8 @@ import { Form, Field } from 'react-final-form';
 class Settings extends Component {
     constructor(props){
         super(props)
+        this.textInput = React.createRef();
+        this.alert = '';
         this.state = {
             changePassword: false,
             addInformation: false,
@@ -15,8 +17,14 @@ class Settings extends Component {
     }
 
     onSubmit = data => {
-        data.token = this.props.token;
-        this.props.addInformation(data);
+        let birthday = this.textInput.current.state.state.values.birthday;
+        if(!birthday || /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/.test(birthday) && birthday.split('.')[2] <= new Date().getFullYear()){
+            data.token = this.props.token;
+            this.alert = '';
+            this.props.addInformation(data);
+        }else{
+            this.alert = 'incorrect date'
+        }
     }
 
     addInformation = () => {
@@ -43,13 +51,14 @@ class Settings extends Component {
                 {this.state.changePassword ? <ChangePassword/> : null}
                 {this.state.addInformation ? 
                 <Form
+                    ref = {this.textInput}
                     onSubmit={this.onSubmit}
                     render={({ handleSubmit }) => (
                         <div className="form-wrap">
                             <form className="form" onSubmit={handleSubmit}>
                                 <h1>Add information</h1>
                                 <div className="message">
-                                    <h4 className="alert">{this.props.message}</h4>
+                                    <h4 className="alert">{this.props.message || this.alert}</h4>
                                     <h4 className="success">{this.props.messageAddInfo}</h4>
                                 </div>
                                 
@@ -62,7 +71,7 @@ class Settings extends Component {
                                 <div>
                                     <label>
                                         <div className="password">Birthday</div>
-                                            <Field name="birthday" className="inputBox" type='text' component="input" autoComplete="on"/>
+                                            <Field name="birthday" className="inputBox" ref type='text' component="input" autoComplete="on" placeholder="18.09.1995"/>
                                     </label>
                                 </div>
                                 <div className="button-link">
