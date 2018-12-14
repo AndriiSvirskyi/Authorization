@@ -38401,7 +38401,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./kisspng-computer-icons-eye-icon-vector-eye-side-5ab0baf8d412f5.6598771615215316408687.jpg":[["kisspng-computer-icons-eye-icon-vector-eye-side-5ab0baf8d412f5.6598771615215316408687.cd867ee2.jpg","src/components/kisspng-computer-icons-eye-icon-vector-eye-side-5ab0baf8d412f5.6598771615215316408687.jpg"],"src/components/kisspng-computer-icons-eye-icon-vector-eye-side-5ab0baf8d412f5.6598771615215316408687.jpg"],"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+},{"./../assets/eye.jpg":[["eye.cbf7042e.jpg","src/assets/eye.jpg"],"src/assets/eye.jpg"],"./../assets/close.png":[["close.c1d859ca.png","src/assets/close.png"],"src/assets/close.png"],"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -40053,7 +40053,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RECOVERY = exports.PERMISSION = exports.CHANGE = exports.USERS = exports.ERROR = exports.AUTH = void 0;
+exports.DELETE = exports.RECOVERY = exports.PERMISSION = exports.CHANGE = exports.USERS = exports.ERROR = exports.AUTH = void 0;
 var AUTH = 'AUTH';
 exports.AUTH = AUTH;
 var ERROR = 'ERROR';
@@ -40066,13 +40066,15 @@ var PERMISSION = "PERMISSION";
 exports.PERMISSION = PERMISSION;
 var RECOVERY = "RECOVERY";
 exports.RECOVERY = RECOVERY;
+var DELETE = "DELETE";
+exports.DELETE = DELETE;
 },{}],"src/actions/auth.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.recovery = exports.addInformation = exports.changePassword = exports.getPermission = exports.getUsers = exports.signout = exports.signin = exports.signup = void 0;
+exports.recovery = exports.deleteUser = exports.addInformation = exports.changePassword = exports.getPermission = exports.getUsers = exports.signout = exports.signin = exports.signup = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -40229,12 +40231,13 @@ var getUsers = function getUsers(token) {
 
               case 4:
                 res = _context3.sent;
-                users = res.data;
+                users = res.data.users;
                 _context3.next = 8;
                 return dispatch({
                   type: _types.USERS,
                   users: users,
-                  permission: true
+                  permission: res.data.permission,
+                  token: token
                 });
 
               case 8:
@@ -40432,7 +40435,7 @@ var addInformation = function addInformation(data) {
 
 exports.addInformation = addInformation;
 
-var recovery = function recovery(data) {
+var deleteUser = function deleteUser(data, callback) {
   return (
     /*#__PURE__*/
     function () {
@@ -40446,20 +40449,72 @@ var recovery = function recovery(data) {
               case 0:
                 _context7.prev = 0;
                 _context7.next = 3;
-                return _axios.default.post("".concat(url, "/recovery"), data);
+                return _axios.default.post("".concat(url, "/deleteUser"), data);
 
               case 3:
                 res = _context7.sent;
+                console.log(res.data.message);
+                dispatch({
+                  type: _types.DELETE,
+                  message: res.data.message,
+                  users: res.data.users
+                });
+                _context7.next = 11;
+                break;
+
+              case 8:
+                _context7.prev = 8;
+                _context7.t0 = _context7["catch"](0);
+                dispatch({
+                  type: _types.ERROR,
+                  message: 'non delete'
+                });
+
+              case 11:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this, [[0, 8]]);
+      }));
+
+      return function (_x7) {
+        return _ref7.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.deleteUser = deleteUser;
+
+var recovery = function recovery(data) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref8 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee8(dispatch) {
+        var res;
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _context8.prev = 0;
+                _context8.next = 3;
+                return _axios.default.post("".concat(url, "/recovery"), data);
+
+              case 3:
+                res = _context8.sent;
                 dispatch({
                   type: _types.RECOVERY,
                   message: "Password send to your email"
                 });
-                _context7.next = 10;
+                _context8.next = 10;
                 break;
 
               case 7:
-                _context7.prev = 7;
-                _context7.t0 = _context7["catch"](0);
+                _context8.prev = 7;
+                _context8.t0 = _context8["catch"](0);
                 dispatch({
                   type: _types.ERROR,
                   message: 'you entered incorrect data'
@@ -40467,14 +40522,14 @@ var recovery = function recovery(data) {
 
               case 10:
               case "end":
-                return _context7.stop();
+                return _context8.stop();
             }
           }
-        }, _callee7, this, [[0, 7]]);
+        }, _callee8, this, [[0, 7]]);
       }));
 
-      return function (_x7) {
-        return _ref7.apply(this, arguments);
+      return function (_x8) {
+        return _ref8.apply(this, arguments);
       };
     }()
   );
@@ -43510,19 +43565,38 @@ function (_Component) {
     }
   }, {
     key: "renderUser",
-    value: function renderUser(users) {
+    value: function renderUser(users, token) {
+      var _this2 = this;
+
       return users.map(function (user, index) {
         return _react.default.createElement("tr", {
           key: index
-        }, _react.default.createElement("td", null, user.email), _react.default.createElement("td", null, user.name), _react.default.createElement("td", null, user.birthday), _react.default.createElement("td", null, user.status));
+        }, _react.default.createElement("td", null, user.email), _react.default.createElement("td", null, user.name), _react.default.createElement("td", null, user.birthday), _react.default.createElement("td", null, user.status), _this2.props.permission === 'admin' ? _react.default.createElement("td", null, user.status === "User" ? _react.default.createElement("div", {
+          className: "close",
+          onClick: function onClick() {
+            return _this2.props.deleteUser({
+              user: user.email,
+              token: token
+            }, function () {
+              _this2.getUsers(token);
+            });
+          }
+        }) : null) : null);
       });
     }
   }, {
     key: "render",
     value: function render() {
+      var token = this.props.token;
       return _react.default.createElement("div", {
         className: "content"
-      }, _react.default.createElement("h2", null, "Users list"), _react.default.createElement("table", null, _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Email"), _react.default.createElement("th", null, "Name"), _react.default.createElement("th", null, "Birthday"), _react.default.createElement("th", null, "Status")), this.props.users ? this.renderUser(this.props.users) : null)));
+      }, _react.default.createElement("h2", null, "Users list"), _react.default.createElement("div", {
+        className: "message"
+      }, _react.default.createElement("h4", {
+        className: "alert"
+      }, this.props.message), _react.default.createElement("h4", {
+        className: "success"
+      }, this.props.messageDeleteUser)), _react.default.createElement("table", null, _react.default.createElement("tbody", null, _react.default.createElement("tr", null, _react.default.createElement("th", null, "Email"), _react.default.createElement("th", null, "Name"), _react.default.createElement("th", null, "Birthday"), _react.default.createElement("th", null, "Status"), this.props.permission === "admin" ? _react.default.createElement("th", null, "Delete user") : null), this.props.users ? this.renderUser(this.props.users, token) : null)));
     }
   }]);
 
@@ -43531,6 +43605,7 @@ function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
+    messageDeleteUser: state.auth.messageDeleteUser,
     message: state.auth.message,
     token: state.auth.token,
     users: state.auth.users,
@@ -44076,7 +44151,9 @@ exports.default = _assign2.default || function (target) {
 
   return target;
 };
-},{"../core-js/object/assign":"node_modules/babel-runtime/core-js/object/assign.js"}],"src/reducers/auth.js":[function(require,module,exports) {
+},{"../core-js/object/assign":"node_modules/babel-runtime/core-js/object/assign.js"}],"node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
+
+},{}],"src/reducers/auth.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44088,17 +44165,20 @@ var _extends2 = _interopRequireDefault(require("babel-runtime/helpers/extends"))
 
 var _types = require("../actions/types");
 
+var _fs = require("fs");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var INITIAL_STATE = {
-  token: '',
-  message: '',
-  messageSignIn: '',
-  messageSignUp: '',
-  messageChangePassword: '',
-  messageAddInfo: '',
-  users: '',
-  permission: ''
+  token: "",
+  message: "",
+  messageSignIn: "",
+  messageSignUp: "",
+  messageChangePassword: "",
+  messageAddInfo: "",
+  messageDeleteUser: "",
+  users: "",
+  permission: ""
 };
 
 var _default = function _default() {
@@ -44124,7 +44204,7 @@ var _default = function _default() {
     case _types.USERS:
       return {
         users: action.users,
-        token: state.token,
+        token: action.token,
         permission: action.permission
       };
 
@@ -44147,13 +44227,20 @@ var _default = function _default() {
         messageRecovery: action.message
       };
 
+    case _types.DELETE:
+      return {
+        messageDeleteUser: action.message,
+        permission: state.permission,
+        users: action.users
+      };
+
     default:
       return state;
   }
 };
 
 exports.default = _default;
-},{"babel-runtime/helpers/extends":"node_modules/babel-runtime/helpers/extends.js","../actions/types":"src/actions/types.js"}],"src/reducers/index.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"node_modules/babel-runtime/helpers/extends.js","../actions/types":"src/actions/types.js","fs":"node_modules/parcel-bundler/src/builtins/_empty.js"}],"src/reducers/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44267,7 +44354,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33489" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37409" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

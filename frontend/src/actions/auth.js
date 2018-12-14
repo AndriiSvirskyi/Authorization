@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH, ERROR, USERS, CHANGE, PERMISSION, RECOVERY } from './types';
+import { AUTH, ERROR, USERS, CHANGE, PERMISSION, RECOVERY, DELETE } from './types';
 
 const url = 'http://localhost:3001/api';
 
@@ -59,12 +59,13 @@ export const getUsers = (token) => async dispatch => {
     try {
         const AuthStr = 'Bearer '.concat(token); 
         const res = await axios.get(`${url}/users`, { headers: { Authorization: AuthStr } });
-        const users = res.data;
-
+        const users = res.data.users;
+        
         await dispatch({
             type: USERS,
             users : users,
-            permission : true,
+            permission: res.data.permission,
+            token: token
         })   
     } catch (err) {
         dispatch({
@@ -125,6 +126,24 @@ export const addInformation = (data) => async dispatch => {
             type: ERROR,
             message: "Information did`not added",
             permission: true
+        });
+    }
+};
+
+export const deleteUser = (data, callback) => async dispatch => {
+    try {
+        const res = await axios.post(`${url}/deleteUser`, data);
+        console.log(res.data.message)
+        
+        dispatch({
+            type: DELETE,
+            message : res.data.message,
+            users: res.data.users
+        });
+    } catch (err) {
+        dispatch({
+            type: ERROR,
+            message: 'non delete'
         });
     }
 };

@@ -136,7 +136,7 @@ tr:nth-child(even) {
     color: white
 }
 .passwordCheck{
-    background-image: url('./kisspng-computer-icons-eye-icon-vector-eye-side-5ab0baf8d412f5.6598771615215316408687.jpg');
+    background-image: url('../assets//eye.jpg');
     background-position: center;
     background-size: cover;
     width: 18px;
@@ -154,4 +154,12 @@ tr:nth-child(even) {
     margin-top: 40px;
     display: flex;
     justify-content: space-evenly;
+}
+.close{
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    background-image: url('../assets/close.png');
+    background-size: contain;
+    cursor: pointer;
 }

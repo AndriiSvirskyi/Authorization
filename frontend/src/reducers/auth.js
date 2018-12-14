@@ -1,14 +1,16 @@
-import { AUTH, ERROR, USERS, CHANGE, PERMISSION, RECOVERY } from '../actions/types';
+import { AUTH, ERROR, USERS, CHANGE, PERMISSION, RECOVERY, DELETE } from '../actions/types';
+import { stat } from 'fs';
 
 const INITIAL_STATE = {
-  token: '',
-  message: '',
-  messageSignIn : '',
-  messageSignUp : '',
-  messageChangePassword : '',
-  messageAddInfo: '',
-  users: '',
-  permission: '',
+  token: "",
+  message: "",
+  messageSignIn : "",
+  messageSignUp : "",
+  messageChangePassword : "",
+  messageAddInfo: "",
+  messageDeleteUser: "",
+  users: "",
+  permission: "",
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -30,7 +32,7 @@ export default (state = INITIAL_STATE, action) => {
     case USERS:
       return {
         users: action.users,
-        token: state.token,
+        token: action.token,
         permission: action.permission
     }
     case CHANGE:
@@ -49,6 +51,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         messageRecovery: action.message,
     }
+    case DELETE:
+      return{
+        messageDeleteUser: action.message,
+        permission : state.permission,
+        users : action.users
+      }
 
     default:
       return state;
